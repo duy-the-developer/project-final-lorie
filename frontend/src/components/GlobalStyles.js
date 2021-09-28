@@ -12,6 +12,7 @@ export default createGlobalStyle`
     --font-heading: 'Cardo', Arial, Helvetica, serif;
     --font-body: 'Libre Franklin', Arial, Helvetica, sans-serif;
     --margin-page: 10vw 5vw;
+    --icon-size: 8vw;
   }
 
   /* http://meyerweb.com/eric/tools/css/reset/

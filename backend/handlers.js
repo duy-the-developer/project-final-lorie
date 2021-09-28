@@ -49,8 +49,7 @@ const dbConnect = async (req, res, next) => {
 // *** SPOONACULAR API HANDLERS ***
 const getMealPlan = async (req, res) => {
   let resData = null;
-  const { timeFrame, targetCalories, diet, exclude } = req.body;
-  // console.log(timeFrame, targetCalories, diet, exclude);
+  const { timeFrame, targetCalories, diet, exclude } = req.query;
 
   try {
     await request(
