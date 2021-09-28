@@ -8,7 +8,7 @@ import Home from "./Home/Home";
 import NavBar from "./NavBar/NavBar";
 import Profile from "./Profile/Profile";
 import Login from "./Login/Login";
-import Search from "./Search/Search";
+import QuickSearch from "./QuickSearch/QuickSearch";
 import GlobalStyles from "./GlobalStyles";
 
 const App = () => {
@@ -21,8 +21,8 @@ const App = () => {
             <Route exact path="/">
               <Home />
             </Route>
-            <Route exact path="/search">
-              <Search />
+            <Route exact path="/QuickSearch">
+              <QuickSearch />
             </Route>
             <Route exact path="/login">
               <Login />

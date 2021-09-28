@@ -11,7 +11,7 @@ export default createGlobalStyle`
     --color-text: #fefefe;
     --font-heading: 'Cardo', Arial, Helvetica, serif;
     --font-body: 'Libre Franklin', Arial, Helvetica, sans-serif;
-    --padding-page: 10vw 5vw;
+    --margin-page: 10vw 5vw;
   }
 
   /* http://meyerweb.com/eric/tools/css/reset/
