@@ -4,10 +4,13 @@ import "./index.css";
 import App from "./components/App";
 import { Auth0Provider } from "@auth0/auth0-react";
 
+require("dotenv").config({path: ".env"});
+const domain = process.env.REACT_APP_AUTH0_DOMAIN;
+
 ReactDOM.render(
   <Auth0Provider
     domain="dev-d7y3zdea.us.auth0.com"
-    clientId="zNqIPe0spFNFjVqUxlRjaNnKCM6P8oFC"
+    clientId="WQyHfO7XXefS7czVxU4sPBcVg0HDdxzn"
     redirectUri={window.location.origin}
   >
     <React.StrictMode>

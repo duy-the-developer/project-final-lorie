@@ -5,8 +5,8 @@ const Home = () => {
   return <Wrapper>Home</Wrapper>;
 };
 
+export default Home;
+
 const Wrapper = styled.div`
   color: var(--color-text);
 `;
-
-export default Home;
