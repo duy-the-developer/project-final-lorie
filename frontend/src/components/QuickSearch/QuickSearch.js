@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 // IMPORT COMPONENTS
 import { StyledSliderIcon } from "../StyledIcons";
+import MealList from "../MealList/MealList";
 
 const QuickSearch = () => {
   const [calories, setCalories] = useState(2000);
@@ -11,6 +12,7 @@ const QuickSearch = () => {
   const [timeFrame, setTimeFrame] = useState(`day`);
   const [diet, setDiet] = useState("");
   const [exclude, setExclude] = useState("");
+  const [mealData, setMealData] = useState(null);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -29,11 +31,15 @@ const QuickSearch = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        setMealData(data);
       })
       .catch((error) => {
         console.log(error);
       });
+
+    if (isAdvancedSearch) {
+      setIsAdvancedSearch(!isAdvancedSearch);
+    }
   };
 
   return (
@@ -100,6 +106,9 @@ const QuickSearch = () => {
         )}
         <SearchButton onClick={handleSearchSubmit}>Search</SearchButton>
       </ControlsWrapper>
+      <DisplayWrapper>
+        {mealData && <MealList mealData={mealData} />}
+      </DisplayWrapper>
     </Wrapper>
   );
 };
@@ -123,6 +132,10 @@ const ControlsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 10px;
+`;
+
+const DisplayWrapper = styled(ControlsWrapper)`
+  flex-direction: row;
 `;
 
 const SliderButton = styled.button`

@@ -39,12 +39,12 @@ const App = () => {
 };
 
 const Main = styled.div`
-  height: 100vh;
+  height: 100%;
   width: 100vw;
-  background: var(--color-background);
 `;
 
 const Wrapper = styled.div`
+  background: var(--color-background);
   display: flex;
   justify-content: center;
   align-items: center;
