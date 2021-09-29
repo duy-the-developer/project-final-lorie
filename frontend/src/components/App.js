@@ -10,6 +10,7 @@ import Profile from "./Profile/Profile";
 import Login from "./Login/Login";
 import QuickSearch from "./QuickSearch/QuickSearch";
 import GlobalStyles from "./GlobalStyles";
+import LoginPush from "../utils/LoginPush";
 
 const App = () => {
   return (
@@ -17,11 +18,12 @@ const App = () => {
       <GlobalStyles />
       <Wrapper>
         <Main>
+          <LoginPush />
           <Switch>
             <Route exact path="/">
               <Home />
             </Route>
-            <Route exact path="/QuickSearch">
+            <Route exact path="/search/quick-search">
               <QuickSearch />
             </Route>
             <Route exact path="/login">

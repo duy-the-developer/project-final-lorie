@@ -161,13 +161,13 @@ const InputWrapper = styled.div`
 
 const StyledSelect = styled.select`
   font-family: var(--font-body);
-  font-size: 24px;
+  font-size: 15px;
   border-radius: 10px;
   color: var(--color-background);
 `;
 
 const StyledInput = styled.input`
-  font-size: 24px;
+  font-size: 15px;
   width: inherit;
   border-radius: 10px;
   box-sizing: border-box;

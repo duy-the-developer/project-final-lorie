@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./components/App";
 import { Auth0Provider } from "@auth0/auth0-react";
 
-require("dotenv").config({path: ".env"});
+require("dotenv").config();
 const domain = process.env.REACT_APP_AUTH0_DOMAIN;
 
 ReactDOM.render(

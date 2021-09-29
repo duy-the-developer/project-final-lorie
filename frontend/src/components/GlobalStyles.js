@@ -9,8 +9,8 @@ export default createGlobalStyle`
     --color-underline: #3d6979;
     --color-underline2: #69b578;
     --color-text: #fefefe;
-    --font-heading: 'Cardo', Arial, Helvetica, serif;
-    --font-body: 'Libre Franklin', Arial, Helvetica, sans-serif;
+    --font-heading: 'Roboto', Arial, Helvetica, sans-serif;
+    --font-body: 'Open Sans', Arial, Helvetica, sans-serif;
     --margin-page: 10vw 5vw;
     --icon-size: 8vw;
   }
@@ -77,7 +77,7 @@ export default createGlobalStyle`
   blockquote,
   input {
         font-family: var(--font-body);
-        font-size: 14px;
+        font-size: 15px;
   }
 
   input {

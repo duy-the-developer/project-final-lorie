@@ -4,7 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 const Profile = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
 
-  console.log(JSON.stringify(user), isAuthenticated, isLoading);
+  console.log(user, isAuthenticated, isLoading);
 
   if (isLoading) {
     return <div>Loading ...</div>;

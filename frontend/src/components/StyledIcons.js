@@ -1,8 +1,9 @@
 import React from "react";
-import { BiSliderAlt } from "react-icons/bi";
+import { BiSliderAlt, BiLoader } from "react-icons/bi";
 import { RiHomeLine, RiSearch2Line, RiBookmark2Line } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
-import styled from "styled-components";
+import { VscLoading } from "react-icons/vsc";
+import styled, { keyframes } from "styled-components";
 
 // SLIDER ICON
 const StyledSliderIcon = () => {
@@ -64,10 +65,47 @@ const Profile = styled(CgProfile)`
   max-height: 30px;
 `;
 
+// REFRESH ICON
+const LoadingAnimation = keyframes`
+0% {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+/* 25% {
+  opacity: 1;
+  transform: rotate(90deg);
+}
+
+75% {
+  opacity: 1;
+  transform: rotate(180deg);
+} */
+
+100% {
+  opacity: 1;
+  transform: rotate(360deg);
+}
+`;
+
+const StyledLoaderIcon = () => {
+  return <StyledLoader />;
+};
+
+const StyledLoader = styled(BiLoader)`
+  width: 50px;
+  height: 50px;
+  color: var(--color-text);
+
+  animation: ${LoadingAnimation} 2.5s linear;
+  animation-iteration-count: infinite;
+`;
+
 export {
   StyledSliderIcon,
   StyledHomeIcon,
   StyledSearchIcon,
   StyledBookMarkIcon,
   StyledProfileIcon,
+  StyledLoaderIcon,
 };
