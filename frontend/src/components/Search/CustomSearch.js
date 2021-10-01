@@ -14,6 +14,7 @@ import {
   cuisines,
   dietTypes,
   intoleranceTypes,
+  sortTypes,
 } from "../../utils/cuisinesData";
 
 const CustomSearch = () => {
@@ -26,6 +27,7 @@ const CustomSearch = () => {
   const [isAdvancedSearch, setIsAdvancedSearch] = useState(false);
   const [diet, setDiet] = useState("");
   const [intolerances, setIntolerances] = useState("");
+  const [sort, setSort] = useState("");
   const [exclude, setExclude] = useState("");
   const [mealData, setMealData] = useState(
     JSON.parse(window.localStorage.getItem(`customSearchLastResult`)) || null
@@ -61,7 +63,7 @@ const CustomSearch = () => {
       cuisine: cuisine,
       diet: diet,
       intolerances: intolerances,
-      exclude: exclude,
+      excludeIngredients: exclude,
       // type: type,
       minCalories: minCalories,
       maxCalories: maxCalories,
@@ -71,6 +73,7 @@ const CustomSearch = () => {
       maxProtein: maxProtein,
       minFat: minFat,
       maxFat: maxFat,
+      sort: sort,
       isStrictMode: false,
     };
 
@@ -150,6 +153,7 @@ const CustomSearch = () => {
               />
             </MacroInputWrapper>
             <StyledSelect
+              value={cuisine}
               id="cuisine"
               name="cuisine"
               onChange={(e) => {
@@ -159,13 +163,14 @@ const CustomSearch = () => {
               <option value="">Cuisine - Pick one (optional)</option>
               {cuisines.map((cuisine) => {
                 return (
-                  <option key={cuisine} value={cuisine}>
+                  <option key={cuisine} value={cuisine.toLowerCase()}>
                     {cuisine}
                   </option>
                 );
               })}
             </StyledSelect>
             <StyledSelect
+              value={diet}
               id="diet"
               name="diet"
               onChange={(e) => {
@@ -175,13 +180,14 @@ const CustomSearch = () => {
               <option value="">Diet type - Pick one (optional)</option>
               {dietTypes.map((diet) => {
                 return (
-                  <option key={diet} value={diet}>
+                  <option key={diet} value={diet.toLowerCase()}>
                     {diet}
                   </option>
                 );
               })}
             </StyledSelect>
             <StyledSelect
+              value={intolerances}
               id="intolerances"
               name="intolerances"
               onChange={(e) => {
@@ -191,8 +197,25 @@ const CustomSearch = () => {
               <option value="">Intolerances - Pick one (optional)</option>
               {intoleranceTypes.map((intolerance) => {
                 return (
-                  <option key={intolerance} value={intolerance}>
+                  <option key={intolerance} value={intolerance.toLowerCase()}>
                     {intolerance}
+                  </option>
+                );
+              })}
+            </StyledSelect>
+            <StyledSelect
+              value={sort}
+              id="sort"
+              name="sort"
+              onChange={(e) => {
+                setIntolerances(e.target.value);
+              }}
+            >
+              <option value="random">Sort by - Pick one (default: Random)</option>
+              {sortTypes.map((sort) => {
+                return (
+                  <option key={sort} value={sort.toLowerCase()}>
+                    {sort}
                   </option>
                 );
               })}
@@ -200,7 +223,7 @@ const CustomSearch = () => {
             <StyledInput
               value={exclude}
               type="string"
-              placeholder="Excluding (e.g. milk)"
+              placeholder="Excluding (e.g. milk) (optional)"
               onChange={(e) => {
                 setExclude(e.target.value);
               }}
@@ -209,9 +232,17 @@ const CustomSearch = () => {
         )}
         <SearchButton onClick={handleSearchSubmit}>Search</SearchButton>
       </ControlsWrapper>
-      <DisplayWrapper>
-        {mealData && <MealList mealData={mealData} />}
-      </DisplayWrapper>
+      {mealData && (
+        <DisplayWrapper>
+          {mealData.totalResults != 0 ? (
+            <MealList mealData={mealData} />
+          ) : (
+            <StyledH1 style={{ textAlign: "left", marginTop: "20%" }}>
+              No recipe found, please remove some search criteria and try again.
+            </StyledH1>
+          )}
+        </DisplayWrapper>
+      )}
     </Wrapper>
   );
 };

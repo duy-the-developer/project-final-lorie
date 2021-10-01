@@ -21,7 +21,8 @@ const MealCard = ({ mealData }) => {
 
 const Wrapper = styled.div`
   width: inherit;
-  max-width: 375px;
+  aspect-ratio: 1/1.3;
+  max-width: 340px;
   background-color: var(--color-midground);
   border-radius: 20px;
   justify-content: flex-start;

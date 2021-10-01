@@ -32,12 +32,12 @@ const NavBar = () => {
 
 const Wrapper = styled.div`
   position: fixed;
-  bottom: 3vw;
+  bottom: 0vw;
   width: 90vw;
   height: 15vw;
   max-height: 70px;
-  border-radius: 20px;
-  background-color: var(--color-midground);
+  border-radius: 20px 20px 0 0;
+  background-color: var(--color-background);
   display: flex;
   justify-content: space-around;
   color: var(--color-text);

@@ -55,3 +55,13 @@ export const intoleranceTypes = [
   `Tree Nut`,
   `Wheat`,
 ];
+
+export const sortTypes = [
+  `Random`,
+  `Calories`,
+  `Popularity`,
+  `Time`,
+  `Carbs`,
+  `Total-fat`,
+  `Protein`,
+];

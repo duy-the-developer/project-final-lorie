@@ -41,7 +41,7 @@ const Wrapper = styled.div`
   row-gap: 10px;
   column-gap: 10px;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding-bottom: 40px;
 
   @media (min-width: 768px) {
