@@ -5,11 +5,7 @@ import MealCard from "./MealCard";
 
 const MealList = ({ mealData }) => {
   const {
-    data: {
-      meals,
-      nutrients: { calories, carbohydrates, fat },
-    },
-    status,
+    data: { meals },
   } = mealData;
 
   return (
@@ -43,8 +39,14 @@ const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   row-gap: 10px;
+  column-gap: 10px;
   justify-content: space-between;
+  align-items: center;
   padding-bottom: 40px;
+
+  @media (min-width: 768px) {
+    justify-content: flex-start;
+  }
 `;
 
 export default MealList;

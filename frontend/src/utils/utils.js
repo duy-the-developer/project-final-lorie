@@ -1,14 +1,3 @@
-const { query } = require("express");
-
-const sendResponse = ({
-  res,
-  status,
-  data,
-  message = "No message included.",
-}) => {
-  return res.status(status).json({ status, data, message });
-};
-
 const getMinMax = (targetValueObj) => {
   let result = {};
   const keysArr = Object.keys(targetValueObj);
@@ -18,8 +7,8 @@ const getMinMax = (targetValueObj) => {
     result = {
       ...result,
       [key]: {
-        [`min${key}`]: targetValueObj[key] * 1 - 5,
-        [`max${key}`]: targetValueObj[key] * 1 + 5,
+        [`min${key}`]: Math.round(targetValueObj[key] * 0.9),
+        [`max${key}`]: Math.round(targetValueObj[key] * 1.1),
       },
     };
   });
@@ -40,4 +29,4 @@ const getQueryString = (queryObject) => {
   return result;
 };
 
-module.exports = { sendResponse, getMinMax, getQueryString };
+module.exports = { getMinMax, getQueryString };

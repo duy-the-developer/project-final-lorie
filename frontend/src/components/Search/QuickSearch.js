@@ -2,6 +2,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
+// IMPORT DATA
+import { dietTypes } from "../../utils/cuisinesData";
+
 // IMPORT COMPONENTS
 import { StyledSliderIcon } from "../StyledIcons";
 import MealList from "../MealList/MealList";
@@ -12,7 +15,9 @@ const QuickSearch = () => {
   const [timeFrame, setTimeFrame] = useState(`day`);
   const [diet, setDiet] = useState("");
   const [exclude, setExclude] = useState("");
-  const [mealData, setMealData] = useState(null);
+  const [mealData, setMealData] = useState(
+    JSON.parse(window.localStorage.getItem(`quickSearchLastResult`)) || null
+  );
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -32,6 +37,10 @@ const QuickSearch = () => {
       .then((res) => res.json())
       .then((data) => {
         setMealData(data);
+        window.localStorage.setItem(
+          `quickSearchLastResult`,
+          JSON.stringify(data)
+        );
       })
       .catch((error) => {
         console.log(error);
@@ -49,7 +58,7 @@ const QuickSearch = () => {
         <InputWrapper>
           <StyledInput
             type="number"
-            placeholder="Calories (e.g. 2000)"
+            placeholder="Daily target calories (e.g. 2000)"
             onChange={(e) => {
               setCalories(e.target.value);
             }}
@@ -77,27 +86,23 @@ const QuickSearch = () => {
             <StyledSelect
               id="diet"
               name="diet"
-              value={diet}
               onChange={(e) => {
                 setDiet(e.target.value);
               }}
             >
-              <option value="">Pick one (optional)</option>
-              <option value="gluten free">Gluten Free</option>
-              <option value="ketogenic">Ketogenic</option>
-              <option value="vegetarian">Vegetarian</option>
-              <option value="lacto-vegetarian">Lacto-Vegetarian</option>
-              <option value="ovo-vegetarian">Ovo-Vegetarian</option>
-              <option value="vegan">Vegan</option>
-              <option value="pescetarian">Pescetarian</option>
-              <option value="paleo">Paleo</option>
-              <option value="primal">Primal</option>
-              <option value="whole30">Whole30</option>
+              <option value="">Diet type - Pick one (optional)</option>
+              {dietTypes.map((diet) => {
+                return (
+                  <option key={diet} value={diet}>
+                    {diet}
+                  </option>
+                );
+              })}
             </StyledSelect>
             <StyledInput
               value={exclude}
               type="string"
-              placeholder="Excluding (e.g. milk)"
+              placeholder="Excluding ingredient (e.g. milk)"
               onChange={(e) => {
                 setExclude(e.target.value);
               }}
@@ -162,6 +167,7 @@ const InputWrapper = styled.div`
 const StyledSelect = styled.select`
   font-family: var(--font-body);
   font-size: 15px;
+  min-height: 40px;
   border-radius: 10px;
   color: var(--color-background);
 `;

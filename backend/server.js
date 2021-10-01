@@ -7,7 +7,7 @@ require("dotenv").config();
 const { PORT } = process.env;
 
 // import handlers
-const { getMealPlan } = require("./handlers");
+const { getMealPlan, getComplexSearch } = require("./handlers");
 
 express()
   // Below are methods that are included in express(). We chain them for convenience.
@@ -30,6 +30,7 @@ express()
 
   // Spoonacular API calls
   .get("/mealPlan", getMealPlan)
+  .get("/complexSearch", getComplexSearch)
 
   //
   // add new endpoints here ☝️

@@ -17,7 +17,7 @@ const NavBar = () => {
       <StyledNavLink to="/" activeClassName="current" exact>
         <StyledHomeIcon />
       </StyledNavLink>
-      <StyledNavLink to="/search/quick-search" activeClassName="current" exact>
+      <StyledNavLink to="/search" activeClassName="current">
         <StyledSearchIcon />
       </StyledNavLink>
       <StyledNavLink to="/bookmark" activeClassName="current" exact>

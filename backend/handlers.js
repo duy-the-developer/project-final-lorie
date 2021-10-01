@@ -7,10 +7,11 @@ const request = require("request-promise");
 
 // use this package to generate unique ids: https://www.npmjs.com/package/uuid
 const { v4: uuidv4 } = require("uuid");
-const { sendResponse } = require("./utils");
+const { sendResponse, getQueryString } = require("./utils");
 
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
 
+// initiate standard error response object
 const errorObject = {
   res: null,
   status: 400,
@@ -65,7 +66,7 @@ const getMealPlan = async (req, res) => {
       res: res,
       status: 200,
       data: resData,
-      message: "Test Successful",
+      message: "Get quick meal plan successful",
     });
   } catch (error) {
     console.log(error);
@@ -73,7 +74,58 @@ const getMealPlan = async (req, res) => {
   }
 };
 
+const getComplexSearch = async (req, res) => {
+  let resData = null;
+  const {
+    cuisine,
+    diet,
+    intolerances,
+    exclude,
+    type,
+    sort,
+    minCarb,
+    maxCarb,
+    minProtein,
+    // maxProtein,
+    minFat,
+    maxFat,
+    minCalories,
+    maxCalories,
+    isStrictMode,
+  } = req.query;
+
+  const queryString = getQueryString(req.query);
+
+  console.log(`queryString`, queryString);
+
+  try {
+    await request(
+      `https://api.spoonacular.com/recipes/complexSearch?apiKey=${SPOONACULAR_APIKEY}&instructionsRequired=true&sortDirection=desc&addRecipeInformation=true${queryString}`
+    )
+      .then((res) => JSON.parse(res))
+      .then((data) => {
+        console.log(data);
+        resData = data;
+      });
+
+    sendResponse({
+      res: res,
+      status: 200,
+      data: { ...resData, meals: resData.results },
+      message: "Test Successful",
+    });
+  } catch (error) {
+    console.log(error);
+    sendResponse({ ...errorObject, res: res, data: error });
+  }
+  // sendResponse({
+  //   res: res,
+  //   status: 200,
+  // });
+};
+
 module.exports = {
   getMealPlan,
   dbConnect,
+  getComplexSearch,
 };

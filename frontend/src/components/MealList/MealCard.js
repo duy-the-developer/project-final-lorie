@@ -41,7 +41,7 @@ const InfoWrapper = styled.div`
 `;
 
 const StyledH2 = styled.h2`
-  font-size: 20px;
+  font-size: 18px;
   text-align: left;
   margin-bottom: 5px;
 `;

@@ -8,9 +8,10 @@ import Home from "./Home/Home";
 import NavBar from "./NavBar/NavBar";
 import Profile from "./Profile/Profile";
 import Login from "./Login/Login";
-import QuickSearch from "./QuickSearch/QuickSearch";
+import QuickSearch from "./Search/QuickSearch";
 import GlobalStyles from "./GlobalStyles";
 import LoginPush from "../utils/LoginPush";
+import CustomSearch from "./Search/CustomSearch";
 
 const App = () => {
   return (
@@ -25,6 +26,9 @@ const App = () => {
             </Route>
             <Route exact path="/search/quick-search">
               <QuickSearch />
+            </Route>
+            <Route exact path="/search/custom-search">
+              <CustomSearch />
             </Route>
             <Route exact path="/login">
               <Login />
