@@ -26,7 +26,7 @@ const CustomSearch = () => {
   // INITIATE STATES
   const { type } = useParams();
   console.log(capitalizeFirstLetter(type));
-  const [calories, setCalories] = useState(500);
+  const [calories, setCalories] = useState(null);
   const [carbsPercentage, setCarbsPercentage] = useState(null);
   const [proteinPercentage, setProteinPercentage] = useState(null);
   const [fatPercentage, setFatPercentage] = useState(null);
@@ -52,6 +52,7 @@ const CustomSearch = () => {
       },
     };
 
+    // CALCULATE TARGET MACRO VALUES AS A % OF CALORIES
     const nutritionQueryObj = {
       Calories: calories,
       Carbs: Math.round(((carbsPercentage / 100) * calories) / 4),
@@ -59,6 +60,7 @@ const CustomSearch = () => {
       Fat: Math.round(((fatPercentage / 100) * calories) / 9),
     };
 
+    // GET MIN MAX VALUES FROM TARGET MACRO VALUES
     const {
       Calories: { minCalories, maxCalories },
       Carbs: { minCarbs, maxCarbs },
@@ -66,6 +68,7 @@ const CustomSearch = () => {
       Fat: { minFat, maxFat },
     } = getMinMax(nutritionQueryObj);
 
+    // CONSTRUCT QUERY STRING OBJECT TO BE PROCESSED
     const queryStringObj = {
       cuisine: cuisine,
       diet: diet,
@@ -84,8 +87,10 @@ const CustomSearch = () => {
       isStrictMode: false,
     };
 
+    // GET QUERY STRING USING HELPER FUNCTION
     const queryString = getQueryString(queryStringObj);
 
+    // FETCH DATA, UPDATE STATE AND SAVE IN LOCAL STORAGE
     fetch(`/complexSearch/?${queryString}`, reqObject)
       .then((res) => res.json())
       .then((data) => {
@@ -99,6 +104,7 @@ const CustomSearch = () => {
         console.log(error);
       });
 
+    // HIDE ADVANCED SEARCH DISPLAY
     if (isAdvancedSearch) {
       setIsAdvancedSearch(!isAdvancedSearch);
     }
@@ -242,10 +248,16 @@ const CustomSearch = () => {
       </ControlsWrapper>
       {mealData && (
         <DisplayWrapper>
-          {mealData.totalResults != 0 ? (
+          {mealData.data.results[0] ? (
             <MealList mealData={mealData} />
           ) : (
-            <StyledH1 style={{ textAlign: "left", marginTop: "20%" }}>
+            <StyledH1
+              style={{
+                textAlign: "left",
+                marginTop: "20%",
+                paddingBottom: "10px",
+              }}
+            >
               No recipe found, please remove some search criteria and try again.
             </StyledH1>
           )}
@@ -273,7 +285,7 @@ const MacroInputWrapper = styled.div`
 const StyledH1 = styled.h1`
   text-align: left;
   display: flex;
-  /* margin-bottom: 0; */
+  margin-bottom: 0;
   font-size: 40px;
   font-style: italic;
   z-index: 1;

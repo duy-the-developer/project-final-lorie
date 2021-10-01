@@ -118,14 +118,202 @@ const getComplexSearch = async (req, res) => {
     console.log(error);
     sendResponse({ ...errorObject, res: res, data: error });
   }
-  // sendResponse({
-  //   res: res,
-  //   status: 200,
-  // });
+};
+
+const getRecipeInformation = async (req, res) => {
+  const { id } = req.params;
+  let resData = null;
+
+  try {
+    // // GET RECIPE INFO FROM SPOONACULAR
+    // await request(
+    //   `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=${SPOONACULAR_APIKEY}`
+    // )
+    //   .then((res) => JSON.parse(res))
+    //   .then((data) => {
+    //     console.log(data);
+    //     resData = { ...resData, information: data.ingredients };
+    //   });
+
+    // // GET INGREDIENTS FROM SPOONACULAR
+    // await request(
+    //   `https://api.spoonacular.com/recipes/${id}/ingredientWidget.json/?apiKey=${SPOONACULAR_APIKEY}`
+    // )
+    //   .then((res) => JSON.parse(res))
+    //   .then((data) => {
+    //     console.log(data);
+    //     resData = { ...resData, ingredients: data.ingredients };
+    //   });
+
+    // // GET ANALYZED INSTRUCTIONS FROM SPOONACULAR
+    // await request(
+    //   `https://api.spoonacular.com/recipes/${id}/analyzedInstructions/?apiKey=${SPOONACULAR_APIKEY}`
+    // )
+    //   .then((res) => JSON.parse(res))
+    //   .then((data) => {
+    //     console.log(data);
+    //     resData = { ...resData, instructions: data[0].steps };
+    //   });
+
+    // // GET NUTRITION FROM SPOONACULAR
+    // await request(
+    //   `https://api.spoonacular.com/recipes/${id}/nutritionWidget.json/?apiKey=${SPOONACULAR_APIKEY}`
+    // )
+    //   .then((res) => JSON.parse(res))
+    //   .then((data) => {
+    //     console.log(data);
+    //     resData = { ...resData, nutrition: data };
+    //   });
+
+    resData = {
+      information: {
+        id: 655219,
+        image: "https://spoonacular.com/recipeImages/655219-312x231.jpg",
+        imageType: "jpg",
+        readyInMinutes: 45,
+        servings: 1,
+      },
+      ingredients: [
+        {
+          name: "quick cooking oats",
+          image: "rolled-oats.jpg",
+          amount: {
+            metric: {
+              value: 80,
+              unit: "g",
+            },
+            us: {
+              value: 1,
+              unit: "cup",
+            },
+          },
+        },
+        {
+          name: "unsweetened cocoa",
+          image: "cocoa-powder.png",
+          amount: {
+            metric: {
+              value: 1,
+              unit: "tsp",
+            },
+            us: {
+              value: 1,
+              unit: "tsp",
+            },
+          },
+        },
+        {
+          name: "agave",
+          image: "agave.png",
+          amount: {
+            metric: {
+              value: 1,
+              unit: "tsp",
+            },
+            us: {
+              value: 1,
+              unit: "tsp",
+            },
+          },
+        },
+        {
+          name: "crunchy peanut butter",
+          image: null,
+          amount: {
+            metric: {
+              value: 1,
+              unit: "Tbsp",
+            },
+            us: {
+              value: 1,
+              unit: "Tbsp",
+            },
+          },
+        },
+        {
+          name: "non-fat milk",
+          image: "milk.jpg",
+          amount: {
+            metric: {
+              value: 122.5,
+              unit: "ml",
+            },
+            us: {
+              value: 0.5,
+              unit: "cup",
+            },
+          },
+        },
+      ],
+      instructions: [
+        {
+          number: 1,
+          step: "Microwave all ingredients in a small bowl or mug for 1 minute, stir and enjoy!",
+          ingredients: [],
+          equipment: [
+            {
+              id: 404762,
+              name: "microwave",
+              localizedName: "microwave",
+              image: "microwave.jpg",
+            },
+            {
+              id: 404783,
+              name: "bowl",
+              localizedName: "bowl",
+              image: "bowl.jpg",
+            },
+          ],
+          length: {
+            number: 1,
+            unit: "minutes",
+          },
+        },
+        {
+          number: 2,
+          step: "Serve with crushed peanuts or almonds for some extra crunch!",
+          ingredients: [
+            {
+              id: 12061,
+              name: "almonds",
+              localizedName: "almonds",
+              image: "almonds.jpg",
+            },
+            {
+              id: 16091,
+              name: "peanuts",
+              localizedName: "peanuts",
+              image: "peanuts.png",
+            },
+          ],
+          equipment: [],
+        },
+      ],
+      nutrition: {
+        calories: "316",
+        carbs: "49g",
+        fat: "12g",
+        protein: "3g",
+      },
+    };
+
+    sendResponse({
+      res: res,
+      status: 200,
+      data: resData,
+      message: "Recipe information found.",
+    });
+  } catch (error) {
+    console.log(error);
+    sendResponse({ ...errorObject, res: res, data: error });
+  }
+
+  console.log(resData);
 };
 
 module.exports = {
   getMealPlan,
   dbConnect,
   getComplexSearch,
+  getRecipeInformation,
 };

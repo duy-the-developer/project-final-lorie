@@ -16,7 +16,7 @@ const SingleRecipe = () => {
   };
 
   useEffect(() => {
-    fetch(`/recipe/?${id}`, reqObject)
+    fetch(`/recipe/${id}`, reqObject)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -26,7 +26,7 @@ const SingleRecipe = () => {
         console.log(error);
       });
   }, []);
-  
+
   return <Wrapper>SingleRecipe</Wrapper>;
 };
 
