@@ -53,7 +53,7 @@ const QuickSearch = () => {
 
   return (
     <Wrapper>
-      <StyledH1>Quick Meal Plans</StyledH1>
+      <StyledH1>Quick meal plans</StyledH1>
       <ControlsWrapper>
         <InputWrapper>
           <StyledInput

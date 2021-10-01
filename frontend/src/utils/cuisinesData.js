@@ -65,3 +65,15 @@ export const sortTypes = [
   `Total-fat`,
   `Protein`,
 ];
+
+export const mealTypes = [
+  `Breakfast`,
+  `Main course`,
+  `Appetizer`,
+  `Salad`,
+  `Soup`,
+  `Dessert`,
+  `Bread`,
+  `Fingerfood`,
+  `Snack`,
+];

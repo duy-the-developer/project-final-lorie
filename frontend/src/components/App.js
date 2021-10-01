@@ -12,6 +12,8 @@ import QuickSearch from "./Search/QuickSearch";
 import GlobalStyles from "./GlobalStyles";
 import LoginPush from "../utils/LoginPush";
 import CustomSearch from "./Search/CustomSearch";
+import SearchMenu from "./Search/SearchMenu";
+import SingleRecipe from "./SingleRecipe/SingleRecipe";
 
 const App = () => {
   return (
@@ -24,11 +26,17 @@ const App = () => {
             <Route exact path="/">
               <Home />
             </Route>
+            <Route exact path="/search">
+              <SearchMenu />
+            </Route>
             <Route exact path="/search/quick-search">
               <QuickSearch />
             </Route>
-            <Route exact path="/search/custom-search">
+            <Route exact path="/search/custom-search/:type">
               <CustomSearch />
+            </Route>
+            <Route exact path="/recipe/:id">
+              <SingleRecipe />
             </Route>
             <Route exact path="/login">
               <Login />

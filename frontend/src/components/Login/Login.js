@@ -8,7 +8,18 @@ const Login = () => {
   return (
     <Wrapper>
       <BackgroundBlurr>
-        <StyledH1>Meet Lorie</StyledH1>
+        <StyledH1>
+          Meet{" "}
+          <span
+            style={{
+              fontStyle: "italic",
+              fontSize: "50px",
+            }}
+          >
+            Lorie
+            <Underline />
+          </span>
+        </StyledH1>
         <Subtitle>Your personal meal planning assistant</Subtitle>
       </BackgroundBlurr>
       <StyledImage
@@ -61,6 +72,10 @@ const BackgroundBlurr = styled.div`
 
 const StyledH1 = styled.h1`
   padding: 10px 0;
+  font-size: 40px;
+  display: flex;
+  column-gap: 10px;
+  align-items: baseline;
   /* background: tomato; */
 `;
 
@@ -87,6 +102,12 @@ const StyledLogin = styled.button`
   &:active {
     opacity: 0.5;
   }
+`;
+
+const Underline = styled.div`
+  margin-top: -13px;
+  border-top: 10px solid var(--color-underline2);
+  z-index: 0;
 `;
 
 export default Login;

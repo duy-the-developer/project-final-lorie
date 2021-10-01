@@ -6,13 +6,15 @@ import styled from "styled-components";
 import { StyledLoaderIcon } from "../components/StyledIcons";
 
 const LoginPush = () => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { isAuthenticated, isLoading } = useAuth0();
   const history = useHistory();
 
+  // CHECK IF USER IS LOGGED IN, IF NOT PUSH TO "/login"
   if (!isLoading && !isAuthenticated) {
     history.push("/login");
   }
 
+  // DISPLAY LOADING ICON IF LOGIN DATA IS STILL LOADING
   if (isLoading) {
     return (
       <Wrapper>
@@ -30,7 +32,7 @@ const Wrapper = styled.div`
   position: absolute;
   background-color: var(--color-background);
   z-index: 100;
-  display: flex; 
+  display: flex;
   justify-content: center;
   align-items: center;
 `;

@@ -3,7 +3,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 // IMPORT UTILITY FUNCTIONS
-import { getMinMax, getQueryString } from "../../utils/utils";
+import {
+  getMinMax,
+  getQueryString,
+  capitalizeFirstLetter,
+} from "../../utils/utils";
 
 // IMPORT COMPONENTS
 import { StyledSliderIcon } from "../StyledIcons";
@@ -16,9 +20,12 @@ import {
   intoleranceTypes,
   sortTypes,
 } from "../../utils/cuisinesData";
+import { useParams } from "react-router";
 
 const CustomSearch = () => {
   // INITIATE STATES
+  const { type } = useParams();
+  console.log(capitalizeFirstLetter(type));
   const [calories, setCalories] = useState(500);
   const [carbsPercentage, setCarbsPercentage] = useState(null);
   const [proteinPercentage, setProteinPercentage] = useState(null);
@@ -30,7 +37,7 @@ const CustomSearch = () => {
   const [sort, setSort] = useState("");
   const [exclude, setExclude] = useState("");
   const [mealData, setMealData] = useState(
-    JSON.parse(window.localStorage.getItem(`customSearchLastResult`)) || null
+    JSON.parse(window.localStorage.getItem(`${type}SearchLastResult`)) || null
   );
 
   // HANDLERS
@@ -64,7 +71,7 @@ const CustomSearch = () => {
       diet: diet,
       intolerances: intolerances,
       excludeIngredients: exclude,
-      // type: type,
+      type: type,
       minCalories: minCalories,
       maxCalories: maxCalories,
       minCarbs: minCarbs,
@@ -79,14 +86,12 @@ const CustomSearch = () => {
 
     const queryString = getQueryString(queryStringObj);
 
-    console.log(queryString);
-
     fetch(`/complexSearch/?${queryString}`, reqObject)
       .then((res) => res.json())
       .then((data) => {
         setMealData(data);
         window.localStorage.setItem(
-          `customSearchLastResult`,
+          `${type}SearchLastResult`,
           JSON.stringify(data)
         );
       })
@@ -102,7 +107,8 @@ const CustomSearch = () => {
   // RENDER
   return (
     <Wrapper>
-      <StyledH1>Custom Recipe Search</StyledH1>
+      <StyledH1>{`${capitalizeFirstLetter(type)}`}</StyledH1>
+      <Underline />
       <ControlsWrapper>
         <InputWrapper>
           <StyledInput
@@ -211,7 +217,9 @@ const CustomSearch = () => {
                 setIntolerances(e.target.value);
               }}
             >
-              <option value="random">Sort by - Pick one (default: Random)</option>
+              <option value="random">
+                Sort by - Pick one (default: Random)
+              </option>
               {sortTypes.map((sort) => {
                 return (
                   <option key={sort} value={sort.toLowerCase()}>
@@ -263,8 +271,12 @@ const MacroInputWrapper = styled.div`
 `;
 
 const StyledH1 = styled.h1`
+  text-align: left;
   display: flex;
-  margin-bottom: 5vw;
+  /* margin-bottom: 0; */
+  font-size: 40px;
+  font-style: italic;
+  z-index: 1;
 `;
 
 const ControlsWrapper = styled.div`
@@ -298,6 +310,7 @@ const InputWrapper = styled.div`
   justify-content: center;
   align-items: center;
   column-gap: 2vw;
+  margin-top: 20px;
 `;
 
 const StyledSelect = styled.select`
@@ -328,6 +341,12 @@ const SearchButton = styled.button`
   &:active {
     opacity: 0.5;
   }
+`;
+
+const Underline = styled.div`
+  margin-top: -10px;
+  border-top: 10px solid var(--color-underline2);
+  z-index: 0;
 `;
 
 export default CustomSearch;

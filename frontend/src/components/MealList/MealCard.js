@@ -1,20 +1,23 @@
 import React from "react";
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
 
 const MealCard = ({ mealData }) => {
   const { id, imageType, readyInMinutes, servings, sourceUrl, title } =
     mealData;
   return (
     <Wrapper>
-      <StyledImg
-        src={`https://spoonacular.com/recipeImages/${id}-636x393.${imageType}`}
-        alt={title}
-      ></StyledImg>
-      <InfoWrapper>
-        <StyledH2>{title}</StyledH2>
-        <div>{readyInMinutes} minutes</div>
-        <div>{servings} servings</div>
-      </InfoWrapper>
+      <StyledNavLink to={`/recipe/${id}`}>
+        <StyledImg
+          src={`https://spoonacular.com/recipeImages/${id}-636x393.${imageType}`}
+          alt={title}
+        ></StyledImg>
+        <InfoWrapper>
+          <StyledH2>{title}</StyledH2>
+          <div>{readyInMinutes} minutes</div>
+          <div>{servings} servings</div>
+        </InfoWrapper>
+      </StyledNavLink>
     </Wrapper>
   );
 };
@@ -45,6 +48,11 @@ const StyledH2 = styled.h2`
   font-size: 18px;
   text-align: left;
   margin-bottom: 5px;
+`;
+
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+  color: inherit;
 `;
 
 export default MealCard;

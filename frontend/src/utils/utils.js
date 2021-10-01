@@ -29,4 +29,8 @@ const getQueryString = (queryObject) => {
   return result;
 };
 
-module.exports = { getMinMax, getQueryString };
+const capitalizeFirstLetter = (string) => {
+  return string.toUpperCase().split("")[0] + string.substring(1);
+};
+
+module.exports = { getMinMax, getQueryString, capitalizeFirstLetter };
