@@ -1,7 +1,8 @@
 // IMPORT DEPENDENCIES
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 // IMPORT COMPONENTS
 import Home from "./Home/Home";
@@ -15,7 +16,26 @@ import CustomSearch from "./Search/CustomSearch";
 import SearchMenu from "./Search/SearchMenu";
 import SingleRecipe from "./SingleRecipe/SingleRecipe";
 
+// IMPORT CONTEXT
+import { UserContext } from "./ContextProviders/UserContext";
+
 const App = () => {
+  const { user, isAuthenticated, isLoading } = useAuth0();
+  const {
+    state: { isLoaded, userContextData },
+    action: { getUserInfo },
+  } = useContext(UserContext);
+
+  if (isAuthenticated) {
+    const { sub } = user;
+    fetch(`/user/${sub}`)
+      .then((res) => res.json())
+      .then((parsedData) => {
+        console.log(parsedData);
+      })
+      .catch((error) => console.log(error));
+  }
+
   return (
     <BrowserRouter>
       <GlobalStyles />

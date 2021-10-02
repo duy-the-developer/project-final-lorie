@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./components/App";
 import { Auth0Provider } from "@auth0/auth0-react";
+import { UserProvider } from "./components/ContextProviders/UserContext";
 
 require("dotenv").config();
 const domain = process.env.REACT_APP_AUTH0_DOMAIN;
@@ -13,9 +14,11 @@ ReactDOM.render(
     clientId="WQyHfO7XXefS7czVxU4sPBcVg0HDdxzn"
     redirectUri={window.location.origin}
   >
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    <UserProvider>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </UserProvider>
   </Auth0Provider>,
   document.getElementById("root")
 );
