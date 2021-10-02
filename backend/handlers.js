@@ -8,6 +8,7 @@ const request = require("request-promise");
 // use this package to generate unique ids: https://www.npmjs.com/package/uuid
 const { v4: uuidv4 } = require("uuid");
 const { sendResponse, getQueryString } = require("./utils");
+const { testData } = require("./testData");
 
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
 
@@ -132,7 +133,7 @@ const getRecipeInformation = async (req, res) => {
     //   .then((res) => JSON.parse(res))
     //   .then((data) => {
     //     console.log(data);
-    //     resData = { ...resData, information: data.ingredients };
+    //     resData = { ...resData, information: data };
     //   });
 
     // // GET INGREDIENTS FROM SPOONACULAR
@@ -165,138 +166,7 @@ const getRecipeInformation = async (req, res) => {
     //     resData = { ...resData, nutrition: data };
     //   });
 
-    resData = {
-      information: {
-        id: 655219,
-        image: "https://spoonacular.com/recipeImages/655219-312x231.jpg",
-        imageType: "jpg",
-        readyInMinutes: 45,
-        servings: 1,
-        title: "Peanut Butter And Chocolate Oatmeal",
-      },
-      ingredients: [
-        {
-          name: "quick cooking oats",
-          image: "rolled-oats.jpg",
-          amount: {
-            metric: {
-              value: 80,
-              unit: "g",
-            },
-            us: {
-              value: 1,
-              unit: "cup",
-            },
-          },
-        },
-        {
-          name: "unsweetened cocoa",
-          image: "cocoa-powder.png",
-          amount: {
-            metric: {
-              value: 1,
-              unit: "tsp",
-            },
-            us: {
-              value: 1,
-              unit: "tsp",
-            },
-          },
-        },
-        {
-          name: "agave",
-          image: "agave.png",
-          amount: {
-            metric: {
-              value: 1,
-              unit: "tsp",
-            },
-            us: {
-              value: 1,
-              unit: "tsp",
-            },
-          },
-        },
-        {
-          name: "crunchy peanut butter",
-          image: null,
-          amount: {
-            metric: {
-              value: 1,
-              unit: "Tbsp",
-            },
-            us: {
-              value: 1,
-              unit: "Tbsp",
-            },
-          },
-        },
-        {
-          name: "non-fat milk",
-          image: "milk.jpg",
-          amount: {
-            metric: {
-              value: 122.5,
-              unit: "ml",
-            },
-            us: {
-              value: 0.5,
-              unit: "cup",
-            },
-          },
-        },
-      ],
-      instructions: [
-        {
-          number: 1,
-          step: "Microwave all ingredients in a small bowl or mug for 1 minute, stir and enjoy!",
-          ingredients: [],
-          equipment: [
-            {
-              id: 404762,
-              name: "microwave",
-              localizedName: "microwave",
-              image: "microwave.jpg",
-            },
-            {
-              id: 404783,
-              name: "bowl",
-              localizedName: "bowl",
-              image: "bowl.jpg",
-            },
-          ],
-          length: {
-            number: 1,
-            unit: "minutes",
-          },
-        },
-        {
-          number: 2,
-          step: "Serve with crushed peanuts or almonds for some extra crunch!",
-          ingredients: [
-            {
-              id: 12061,
-              name: "almonds",
-              localizedName: "almonds",
-              image: "almonds.jpg",
-            },
-            {
-              id: 16091,
-              name: "peanuts",
-              localizedName: "peanuts",
-              image: "peanuts.png",
-            },
-          ],
-          equipment: [],
-        },
-      ],
-      nutrition: {
-        calories: "316",
-        carbs: "49g",
-        fat: "12g",
-        protein: "3g",
-      },
-    };
+    resData = testData;
 
     sendResponse({
       res: res,

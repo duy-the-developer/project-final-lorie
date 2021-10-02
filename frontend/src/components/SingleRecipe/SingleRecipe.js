@@ -46,17 +46,20 @@ const SingleRecipe = () => {
       nutrition: { calories, carbs, fat, protein },
     } = recipeData.data;
 
+    console.log(protein);
+
+    const caloriesNumOnly = calories.replace("k", "");
     const carbsPercentage = Math.round(
-      ((carbs.replace("g", "") * 4) / calories) * 100
+      ((carbs.replace("g", "") * 4) / caloriesNumOnly) * 100 * 0.8
     );
     const fatPercentage = Math.round(
-      ((fat.replace("g", "") * 9) / calories) * 100
+      ((fat.replace("g", "") * 9) / caloriesNumOnly) * 100 * 0.8
     );
     const proteinPercentage = Math.round(
-      ((protein.replace("g", "") * 4) / calories) * 100
+      ((protein.replace("g", "") * 4) / caloriesNumOnly) * 100 * 0.8
     );
 
-    console.log(proteinPercentage);
+    console.log(`proteinPercentage`, proteinPercentage);
 
     return (
       <Wrapper>
@@ -88,7 +91,7 @@ const SingleRecipe = () => {
                         width: "auto",
                       }}
                     >
-                      {calories} Calories
+                      {caloriesNumOnly} kCalories
                     </IngredientLine>
                   </Row>
                   <Row>
@@ -208,6 +211,7 @@ const NutritionTitles = styled.div`
 const IngredientLine = styled.div`
   width: 30%;
   padding: 0 0px;
+  margin-right: 10px;
 `;
 
 const Bar = styled.div`
