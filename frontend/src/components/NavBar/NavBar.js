@@ -9,7 +9,7 @@ import {
   StyledSearchIcon,
   StyledBookMarkIcon,
   StyledProfileIcon,
-} from "../StyledIcons";
+} from "../utils/StyledIcons";
 
 const NavBar = () => {
   return (

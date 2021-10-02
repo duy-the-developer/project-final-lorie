@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 // IMPORT DATA
-import { dietTypes } from "../../utils/cuisinesData";
+import { dietTypes } from "../utils/cuisinesData";
 
 // IMPORT COMPONENTS
-import { StyledSliderIcon } from "../StyledIcons";
+import { StyledSliderIcon } from "../utils/StyledIcons";
 import MealList from "../MealList/MealList";
 
 const QuickSearch = () => {

@@ -7,10 +7,10 @@ import {
   getMinMax,
   getQueryString,
   capitalizeFirstLetter,
-} from "../../utils/utils";
+} from "../utils/utils";
 
 // IMPORT COMPONENTS
-import { StyledSliderIcon } from "../StyledIcons";
+import { StyledSliderIcon } from "../utils/StyledIcons";
 import MealList from "../MealList/MealList";
 
 // IMPORT DATA
@@ -19,7 +19,7 @@ import {
   dietTypes,
   intoleranceTypes,
   sortTypes,
-} from "../../utils/cuisinesData";
+} from "../utils/cuisinesData";
 import { useParams } from "react-router";
 
 const CustomSearch = () => {

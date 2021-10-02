@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
-import { mealTypes } from "../../utils/cuisinesData";
+import { mealTypes } from "../utils/cuisinesData";
 
 const SearchMenu = () => {
   return (

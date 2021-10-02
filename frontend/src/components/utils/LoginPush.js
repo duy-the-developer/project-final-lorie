@@ -3,7 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 
-import { StyledLoaderIcon } from "../components/StyledIcons";
+import { StyledLoaderIcon } from "./StyledIcons";
 
 const LoginPush = () => {
   const { isAuthenticated, isLoading } = useAuth0();

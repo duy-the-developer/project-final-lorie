@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import IngredientList from "./IngredientList";
 import InstructionList from "./InstructionList";
-import { StyledBackIcon } from "../StyledIcons";
+import { StyledBackIcon } from "../utils/StyledIcons";
 
 const SingleRecipe = () => {
   const history = useHistory();
@@ -50,13 +50,13 @@ const SingleRecipe = () => {
 
     const caloriesNumOnly = calories.replace("k", "");
     const carbsPercentage = Math.round(
-      ((carbs.replace("g", "") * 4) / caloriesNumOnly) * 100 * 0.8
+      ((carbs.replace("g", "") * 4) / caloriesNumOnly) * 100 * 0.9
     );
     const fatPercentage = Math.round(
-      ((fat.replace("g", "") * 9) / caloriesNumOnly) * 100 * 0.8
+      ((fat.replace("g", "") * 9) / caloriesNumOnly) * 100 * 0.9
     );
     const proteinPercentage = Math.round(
-      ((protein.replace("g", "") * 4) / caloriesNumOnly) * 100 * 0.8
+      ((protein.replace("g", "") * 4) / caloriesNumOnly) * 100 * 0.9
     );
 
     console.log(`proteinPercentage`, proteinPercentage);

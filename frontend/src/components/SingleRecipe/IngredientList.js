@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { capitalizeFirstLetter } from "../../utils/utils";
+import { capitalizeFirstLetter } from "../utils/utils";
 
 const IngredientList = ({ ingredients }) => {
   return (
