@@ -7,7 +7,7 @@ const MealCard = ({ mealData }) => {
     mealData;
   return (
     <Wrapper>
-      <StyledNavLink to={`/recipe/${id}`}>
+      <StyledNavLink to={`/search/recipe/${id}`}>
         <StyledImg
           src={`https://spoonacular.com/recipeImages/${id}-636x393.${imageType}`}
           alt={title}

@@ -4,6 +4,7 @@ import { RiHomeLine, RiSearch2Line, RiBookmark2Line } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
 import { VscLoading } from "react-icons/vsc";
 import styled, { keyframes } from "styled-components";
+import { IoIosArrowBack } from "react-icons/io";
 
 // SLIDER ICON
 const StyledSliderIcon = () => {
@@ -101,6 +102,18 @@ const StyledLoader = styled(BiLoader)`
   animation-iteration-count: infinite;
 `;
 
+// BACK ICON
+const StyledBackIcon = () => {
+  return <Back />;
+};
+
+const Back = styled(IoIosArrowBack)`
+  height: var(--icon-size);
+  width: var(--icon-size);
+  max-width: 30px;
+  max-height: 30px;
+`;
+
 export {
   StyledSliderIcon,
   StyledHomeIcon,
@@ -108,4 +121,5 @@ export {
   StyledBookMarkIcon,
   StyledProfileIcon,
   StyledLoaderIcon,
+  StyledBackIcon,
 };

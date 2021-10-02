@@ -11,7 +11,7 @@ export default createGlobalStyle`
     --color-text: #fefefe;
     --font-heading: 'Roboto', Arial, Helvetica, sans-serif;
     --font-body: 'Open Sans', Arial, Helvetica, sans-serif;
-    --margin-page: 10vw 5vw;
+    --margin-page: 5vw 5vw;
     --icon-size: 8vw;
   }
 

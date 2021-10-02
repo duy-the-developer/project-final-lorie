@@ -35,7 +35,7 @@ const App = () => {
             <Route exact path="/search/custom-search/:type">
               <CustomSearch />
             </Route>
-            <Route exact path="/recipe/:id">
+            <Route exact path="/search/recipe/:id">
               <SingleRecipe />
             </Route>
             <Route exact path="/login">

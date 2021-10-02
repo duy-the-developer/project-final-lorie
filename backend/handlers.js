@@ -172,6 +172,7 @@ const getRecipeInformation = async (req, res) => {
         imageType: "jpg",
         readyInMinutes: 45,
         servings: 1,
+        title: "Peanut Butter And Chocolate Oatmeal",
       },
       ingredients: [
         {
