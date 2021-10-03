@@ -48,6 +48,116 @@ const dbConnect = async (req, res, next) => {
   }
 };
 
+const verifyUser = async (req, res, next) => {
+  const {
+    client,
+    db,
+    params: { sub },
+  } = req;
+
+  try {
+    const user = await db.collection("users").find({ _id: sub }).toArray();
+
+    if (user[0]) {
+      req.user = user[0];
+      console.log(`User found`, user[0]);
+      next();
+    } else {
+      console.log(`User not found`);
+      sendResponse({ res: res, status: 404, message: "User not found" });
+
+      client.close();
+    }
+  } catch (error) {
+    console.log(error);
+    sendRes({ ...errorObject, res: res });
+    client.close();
+  }
+};
+
+const getUserInfo = async (req, res) => {
+  const {
+    client,
+    db,
+    params: { sub },
+    user,
+  } = req;
+
+  try {
+    sendResponse({
+      res: res,
+      status: 200,
+      message: `User found, _id: ${user._id}`,
+      data: user,
+    });
+
+    client.close();
+  } catch (error) {
+    console.log(error);
+    sendResponse({ ...errorObject, res: res });
+    client.close();
+  }
+};
+
+const addNewUser = async (req, res) => {
+  const {
+    client,
+    db,
+    body: {
+      sub,
+      given_name,
+      email,
+      targetDailyCalories,
+      proteinPercentage,
+      fatPercentage,
+      carbsPercentage,
+    },
+    user,
+  } = req;
+
+  console.log(req.body);
+
+  // INITIATE NEW USER OBJECT
+  const newUserObj = {
+    _id: sub,
+    email: email,
+    family_name: "",
+    given_name: given_name,
+    mealPlans: [],
+    favouriteMeals: [],
+    settings: {
+      targetDailyCalories: targetDailyCalories,
+      marcroNutrients: {
+        proteinPercentage: proteinPercentage,
+        fatPercentage: fatPercentage,
+        carbsPercentage: carbsPercentage,
+      },
+    },
+  };
+
+  try {
+    await db.collection("users").insertOne(newUserObj);
+
+    const newUserCreated = await db
+      .collection("users")
+      .find({ _id: sub })
+      .toArray();
+
+    sendResponse({
+      res: res,
+      status: 201,
+      data: newUserCreated[0],
+      message: "New user was created.",
+    });
+
+    client.close();
+  } catch (error) {
+    console.log(error);
+    sendResponse({ ...errorObject, res: res });
+    client.close();
+  }
+};
+
 // *** SPOONACULAR API HANDLERS ***
 const getMealPlan = async (req, res) => {
   let resData = null;
@@ -77,23 +187,6 @@ const getMealPlan = async (req, res) => {
 
 const getComplexSearch = async (req, res) => {
   let resData = null;
-  const {
-    cuisine,
-    diet,
-    intolerances,
-    excludeIngredients,
-    type,
-    sort,
-    minCarb,
-    maxCarb,
-    minProtein,
-    maxProtein,
-    minFat,
-    maxFat,
-    minCalories,
-    maxCalories,
-    isStrictMode,
-  } = req.query;
 
   const queryString = getQueryString(req.query);
 
@@ -183,8 +276,11 @@ const getRecipeInformation = async (req, res) => {
 };
 
 module.exports = {
-  getMealPlan,
   dbConnect,
+  getMealPlan,
   getComplexSearch,
   getRecipeInformation,
+  getUserInfo,
+  verifyUser,
+  addNewUser,
 };

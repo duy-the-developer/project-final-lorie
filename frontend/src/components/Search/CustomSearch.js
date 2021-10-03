@@ -34,7 +34,7 @@ const CustomSearch = () => {
   const [isAdvancedSearch, setIsAdvancedSearch] = useState(false);
   const [diet, setDiet] = useState("");
   const [intolerances, setIntolerances] = useState("");
-  const [sort, setSort] = useState("");
+  const [sort, setSort] = useState(`random`);
   const [exclude, setExclude] = useState("");
   const [mealData, setMealData] = useState(
     JSON.parse(window.localStorage.getItem(`${type}SearchLastResult`)) || null
@@ -85,10 +85,12 @@ const CustomSearch = () => {
       maxFat: maxFat,
       sort: sort,
       isStrictMode: false,
+      offset: Math.floor(Math.random() * 5),
     };
 
     // GET QUERY STRING USING HELPER FUNCTION
     const queryString = getQueryString(queryStringObj);
+    console.log(queryString);
 
     // FETCH DATA, UPDATE STATE AND SAVE IN LOCAL STORAGE
     fetch(`/complexSearch/?${queryString}`, reqObject)
@@ -136,27 +138,24 @@ const CustomSearch = () => {
         {isAdvancedSearch && (
           <>
             <MacroInputWrapper>
-              <StyledInput
+              <StyledMiniInput
                 value={carbsPercentage}
-                style={{ width: "30%" }}
                 type="number"
                 placeholder="Carbs %"
                 onChange={(e) => {
                   setCarbsPercentage(e.target.value);
                 }}
               />
-              <StyledInput
+              <StyledMiniInput
                 value={proteinPercentage}
-                style={{ width: "30%" }}
                 type="number"
                 placeholder="Protein %"
                 onChange={(e) => {
                   setProteinPercentage(e.target.value);
                 }}
               />
-              <StyledInput
+              <StyledMiniInput
                 value={fatPercentage}
-                style={{ width: "30%" }}
                 type="number"
                 placeholder="Fat %"
                 onChange={(e) => {
@@ -338,6 +337,10 @@ const StyledInput = styled.input`
   width: inherit;
   border-radius: 10px;
   box-sizing: border-box;
+`;
+
+const StyledMiniInput = styled(StyledInput)`
+  width: 30%;
 `;
 
 const SearchButton = styled.button`

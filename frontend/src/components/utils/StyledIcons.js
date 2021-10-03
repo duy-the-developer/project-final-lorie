@@ -73,16 +73,6 @@ const LoadingAnimation = keyframes`
   transform: rotate(0deg);
 }
 
-/* 25% {
-  opacity: 1;
-  transform: rotate(90deg);
-}
-
-75% {
-  opacity: 1;
-  transform: rotate(180deg);
-} */
-
 100% {
   opacity: 1;
   transform: rotate(360deg);

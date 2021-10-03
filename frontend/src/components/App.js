@@ -1,5 +1,5 @@
 // IMPORT DEPENDENCIES
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -20,21 +20,41 @@ import SingleRecipe from "./SingleRecipe/SingleRecipe";
 import { UserContext } from "./ContextProviders/UserContext";
 
 const App = () => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  // GET DATA FROM AUTH0
+  const { user, isAuthenticated } = useAuth0();
+
+  // DESTRUCTURE USER CONTEXT VARIABLES
   const {
     state: { isLoaded, userContextData },
     action: { getUserInfo },
   } = useContext(UserContext);
 
-  if (isAuthenticated) {
-    const { sub } = user;
-    fetch(`/user/${sub}`)
-      .then((res) => res.json())
-      .then((parsedData) => {
-        console.log(parsedData);
-      })
-      .catch((error) => console.log(error));
-  }
+  // FETCH USER DATA FROM MONGODB IF USER IS AUTHENTICATED
+  useEffect(() => {
+    if (isAuthenticated) {
+      // GET UNIQUE SUB STRING FROM AUTH0 USER OBJECT
+      const { sub } = user;
+      console.log(sub);
+
+      // INITATE REQUEST OBJECT
+      const reqObject = {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      };
+
+      // FETCH BE API END POINT /user/:sub
+      fetch(`/user/${sub}`, reqObject)
+        .then((res) => res.json())
+        .then((parsedData) => {
+          console.log(parsedData);
+          getUserInfo(parsedData);
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [isAuthenticated]);
 
   return (
     <BrowserRouter>

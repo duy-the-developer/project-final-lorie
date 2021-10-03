@@ -4,7 +4,22 @@ export const UserContext = createContext();
 
 const initialState = {
   isLoaded: false,
-  userContextData: null,
+  userContextData: {
+    _id: "",
+    email: "",
+    family_name: "",
+    given_name: "",
+    mealPlans: [],
+    favouriteMeals: [],
+    settings: {
+      targetDailyCalories: 2000,
+      marcroNutrients: {
+        proteinPercentage: 30,
+        fatPercentage: 35,
+        carbsPercentage: 35,
+      },
+    },
+  },
 };
 
 const reducer = (state, action) => {

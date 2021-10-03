@@ -1,14 +1,28 @@
-import React, { useEffect, useState } from "react";
+// IMPORT DEPENDENCIES
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import styled from "styled-components";
 
+// IMPORT COMPONENTS
 import IngredientList from "./IngredientList";
 import InstructionList from "./InstructionList";
 import { StyledBackIcon } from "../utils/StyledIcons";
+import FavouriteButton from "./FavouriteButton";
+import AddToMealPlanButton from "./AddToMealPlanButton";
+
+// IMPORT CONTEXT
+import { UserContext } from "../ContextProviders/UserContext";
 
 const SingleRecipe = () => {
   const history = useHistory();
   const { id } = useParams();
+  const {
+    state: {
+      userContextData: { _id },
+    },
+  } = useContext(UserContext);
+
+  // INITIALIZE STATES
   const [recipeData, setRecipeData] = useState({
     status: "",
     data: {},
@@ -24,6 +38,7 @@ const SingleRecipe = () => {
     },
   };
 
+  // FETCH RECIPE INFO FROM SPOONACULAR API
   useEffect(() => {
     fetch(`/recipe/${id}`, reqObject)
       .then((res) => res.json())
@@ -36,8 +51,7 @@ const SingleRecipe = () => {
       });
   }, []);
 
-  console.log(recipeData.data);
-
+  // ONCE THE DATA IS LOADED, RENDER THE PAGE
   if (recipeData.isLoaded) {
     const {
       information: { image, imageType, readyInMinutes, servings, title },
@@ -45,8 +59,6 @@ const SingleRecipe = () => {
       instructions,
       nutrition: { calories, carbs, fat, protein },
     } = recipeData.data;
-
-    console.log(protein);
 
     const caloriesNumOnly = calories.replace("k", "");
     const carbsPercentage = Math.round(
@@ -59,12 +71,26 @@ const SingleRecipe = () => {
       ((protein.replace("g", "") * 4) / caloriesNumOnly) * 100 * 0.9
     );
 
-    console.log(`proteinPercentage`, proteinPercentage);
-
     return (
       <Wrapper>
-        <div onClick={() => history.goBack()}>
-          <StyledBackIcon />
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <div onClick={() => history.goBack()}>
+            <StyledBackIcon />
+          </div>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <FavouriteButton
+              recipeId={id}
+              recipeData={recipeData.data}
+              userId={_id}
+            />
+            <AddToMealPlanButton />
+          </div>
         </div>
         <StyledH1>{title}</StyledH1>
         <ContentWrapper>
@@ -138,7 +164,7 @@ const SingleRecipe = () => {
       </Wrapper>
     );
   } else {
-    return <>Loading...</>;
+    return <></>;
   }
 };
 
