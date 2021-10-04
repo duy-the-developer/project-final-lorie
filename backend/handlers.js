@@ -158,6 +158,74 @@ const addNewUser = async (req, res) => {
   }
 };
 
+const addFavourite = async (req, res) => {
+  const {
+    client,
+    db,
+    body: { id, information, instructions, nutrition, userId },
+  } = req;
+
+  const query = { _id: userId };
+
+  const updateObj = {
+    $push: {
+      favouriteMeals: {
+        id: id,
+        information: information,
+        instructions: instructions,
+        nutrition: nutrition,
+      },
+    },
+  };
+
+  try {
+    await db.collection("users").updateOne(query, updateObj);
+
+    sendResponse({
+      res: res,
+      status: 200,
+      message: `Recipe id:${id} added to favourite`,
+    });
+    client.close();
+  } catch (error) {
+    console.log(error);
+    sendResponse({ ...errorObject, res: res });
+    client.close();
+  }
+};
+
+const deleteFavourite = async (req, res) => {
+  const {
+    client,
+    db,
+    body: { id, information, instructions, nutrition, userId },
+  } = req;
+
+  const query = { _id: userId };
+
+  const updateObj = {
+    $pull: {
+      favouriteMeals: {
+        id: id,
+      },
+    },
+  };
+
+  try {
+    await db.collection("users").updateOne(query, updateObj);
+
+    sendResponse({
+      res: res,
+      status: 200,
+      message: `Remove meal ${id} from favourite successful`,
+    });
+  } catch (error) {
+    console.log(error);
+    sendResponse({ ...errorObject, res: res });
+    client.close();
+  }
+};
+
 // *** SPOONACULAR API HANDLERS ***
 const getMealPlan = async (req, res) => {
   let resData = null;
@@ -219,47 +287,47 @@ const getRecipeInformation = async (req, res) => {
   let resData = null;
 
   try {
-    // // GET RECIPE INFO FROM SPOONACULAR
-    // await request(
-    //   `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=${SPOONACULAR_APIKEY}`
-    // )
-    //   .then((res) => JSON.parse(res))
-    //   .then((data) => {
-    //     console.log(data);
-    //     resData = { ...resData, information: data };
-    //   });
+    // GET RECIPE INFO FROM SPOONACULAR
+    await request(
+      `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=${SPOONACULAR_APIKEY}`
+    )
+      .then((res) => JSON.parse(res))
+      .then((data) => {
+        console.log(data);
+        resData = { ...resData, information: data };
+      });
 
-    // // GET INGREDIENTS FROM SPOONACULAR
-    // await request(
-    //   `https://api.spoonacular.com/recipes/${id}/ingredientWidget.json/?apiKey=${SPOONACULAR_APIKEY}`
-    // )
-    //   .then((res) => JSON.parse(res))
-    //   .then((data) => {
-    //     console.log(data);
-    //     resData = { ...resData, ingredients: data.ingredients };
-    //   });
+    // (NO LONGER NEEDED) GET INGREDIENTS FROM SPOONACULAR
+    await request(
+      `https://api.spoonacular.com/recipes/${id}/ingredientWidget.json/?apiKey=${SPOONACULAR_APIKEY}`
+    )
+      .then((res) => JSON.parse(res))
+      .then((data) => {
+        console.log(data);
+        resData = { ...resData, ingredients: data.ingredients };
+      });
 
-    // // GET ANALYZED INSTRUCTIONS FROM SPOONACULAR
-    // await request(
-    //   `https://api.spoonacular.com/recipes/${id}/analyzedInstructions/?apiKey=${SPOONACULAR_APIKEY}`
-    // )
-    //   .then((res) => JSON.parse(res))
-    //   .then((data) => {
-    //     console.log(data);
-    //     resData = { ...resData, instructions: data[0].steps };
-    //   });
+    // GET ANALYZED INSTRUCTIONS FROM SPOONACULAR
+    await request(
+      `https://api.spoonacular.com/recipes/${id}/analyzedInstructions/?apiKey=${SPOONACULAR_APIKEY}`
+    )
+      .then((res) => JSON.parse(res))
+      .then((data) => {
+        console.log(data);
+        resData = { ...resData, instructions: data[0].steps };
+      });
 
-    // // GET NUTRITION FROM SPOONACULAR
-    // await request(
-    //   `https://api.spoonacular.com/recipes/${id}/nutritionWidget.json/?apiKey=${SPOONACULAR_APIKEY}`
-    // )
-    //   .then((res) => JSON.parse(res))
-    //   .then((data) => {
-    //     console.log(data);
-    //     resData = { ...resData, nutrition: data };
-    //   });
+    // GET NUTRITION FROM SPOONACULAR
+    await request(
+      `https://api.spoonacular.com/recipes/${id}/nutritionWidget.json/?apiKey=${SPOONACULAR_APIKEY}`
+    )
+      .then((res) => JSON.parse(res))
+      .then((data) => {
+        console.log(data);
+        resData = { ...resData, nutrition: data };
+      });
 
-    resData = testData;
+    // resData = testData;
 
     sendResponse({
       res: res,
@@ -283,4 +351,6 @@ module.exports = {
   getUserInfo,
   verifyUser,
   addNewUser,
+  addFavourite,
+  deleteFavourite,
 };

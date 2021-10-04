@@ -12,6 +12,8 @@ const {
   verifyUser,
   getUserInfo,
   addNewUser,
+  addFavourite,
+  deleteFavourite,
   getMealPlan,
   getComplexSearch,
   getRecipeInformation,
@@ -28,19 +30,23 @@ express()
   // Any requests for static files will go into the public folder
   .use(express.static("public"))
 
-  // global middleware to connect to db
-  // .use(dbConnect)
-
   // Nothing to modify above this line
   // ---------------------------------
   // add new endpoints here 👇
   //
 
   // localHost API endpoints
+  // --------------------------------
+  // *** Users related endpoints ***
   .get("/user/:sub", dbConnect, verifyUser, getUserInfo)
   .post("/user/add", dbConnect, addNewUser)
 
+  // *** Favourite meals endpoints ***
+  .put("/favourite", dbConnect, addFavourite)
+  .delete("/favourite", dbConnect, deleteFavourite)
+
   // Spoonacular API endpoints
+  // -------------------------------
   .get("/mealPlan", getMealPlan)
   .get("/complexSearch", getComplexSearch)
   .get("/recipe/:id", getRecipeInformation)

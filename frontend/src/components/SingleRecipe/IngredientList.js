@@ -7,21 +7,24 @@ const IngredientList = ({ ingredients }) => {
     <Wrapper>
       {ingredients.map((ingredient) => {
         const {
-          amount: {
-            metric: { value, unit },
-          },
           image,
-          name,
+          originalName,
+          measures: {
+            metric: { amount, unitShort },
+          },
         } = ingredient;
+
+        const roundedAmount = Math.round(amount);
+
         return (
           <IngredientWrapper>
             <StyledImage
               src={`https://spoonacular.com/cdn/ingredients_100x100/${image}`}
             ></StyledImage>
             <InfoWrapper>
-              <Name>{`${capitalizeFirstLetter(name)}`}</Name>
-              <Amount>{`${value}
-              ${unit}`}</Amount>
+              <Name>{`${capitalizeFirstLetter(originalName)}`}</Name>
+              <Amount>{`${roundedAmount}
+              ${unitShort}`}</Amount>
             </InfoWrapper>
           </IngredientWrapper>
         );
@@ -60,6 +63,10 @@ const Name = styled.div`
 
 const Amount = styled.div``;
 
-const InfoWrapper = styled.div``;
+const InfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: 2px;
+`;
 
 export default IngredientList;

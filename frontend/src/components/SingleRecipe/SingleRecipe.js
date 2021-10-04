@@ -18,7 +18,7 @@ const SingleRecipe = () => {
   const { id } = useParams();
   const {
     state: {
-      userContextData: { _id },
+      userContextData: { _id, favouriteMeals },
     },
   } = useContext(UserContext);
 
@@ -43,7 +43,7 @@ const SingleRecipe = () => {
     fetch(`/recipe/${id}`, reqObject)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        console.log(`DATA SINGLE RECIPE EXPECT`, data);
         setRecipeData({ ...data, isLoaded: true });
       })
       .catch((error) => {
@@ -54,7 +54,14 @@ const SingleRecipe = () => {
   // ONCE THE DATA IS LOADED, RENDER THE PAGE
   if (recipeData.isLoaded) {
     const {
-      information: { image, imageType, readyInMinutes, servings, title },
+      information: {
+        image,
+        imageType,
+        readyInMinutes,
+        servings,
+        title,
+        extendedIngredients,
+      },
       ingredients,
       instructions,
       nutrition: { calories, carbs, fat, protein },
@@ -70,6 +77,8 @@ const SingleRecipe = () => {
     const proteinPercentage = Math.round(
       ((protein.replace("g", "") * 4) / caloriesNumOnly) * 100 * 0.9
     );
+
+    console.log(extendedIngredients, `extendedIngredients`);
 
     return (
       <Wrapper>
@@ -88,6 +97,7 @@ const SingleRecipe = () => {
               recipeId={id}
               recipeData={recipeData.data}
               userId={_id}
+              favouriteMeals={favouriteMeals}
             />
             <AddToMealPlanButton />
           </div>
@@ -154,7 +164,7 @@ const SingleRecipe = () => {
           </Container>
           <Container>
             <StyledH2>Ingredients</StyledH2>
-            <IngredientList ingredients={ingredients} />
+            <IngredientList ingredients={extendedIngredients} />
           </Container>
           <Container>
             <StyledH2>Instructions</StyledH2>
