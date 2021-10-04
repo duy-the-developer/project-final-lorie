@@ -3,8 +3,6 @@ import { AiFillStar } from "react-icons/ai";
 import styled from "styled-components";
 
 const FavouriteButton = ({ recipeId, recipeData, userId, favouriteMeals }) => {
-  console.log(`In Fav Button`, recipeData);
-
   // INITIALIZE STATES
   const [isFavouriteByUser, setIsFavouriteByUser] = useState(false);
 
@@ -52,8 +50,8 @@ const FavouriteButton = ({ recipeId, recipeData, userId, favouriteMeals }) => {
         .catch((error) => {
           console.log(error);
         });
-    } 
-    
+    }
+
     // IF RECIPE IS ALREADY FAVOURITED, REMOVE IT
     else {
       const reqObject = {

@@ -18,7 +18,7 @@ const SingleRecipe = () => {
   const { id } = useParams();
   const {
     state: {
-      userContextData: { _id, favouriteMeals },
+      userContextData: { _id, favouriteMeals, mealPlans },
     },
   } = useContext(UserContext);
 
@@ -99,12 +99,17 @@ const SingleRecipe = () => {
               userId={_id}
               favouriteMeals={favouriteMeals}
             />
-            <AddToMealPlanButton />
+            <AddToMealPlanButton
+              recipeId={id}
+              recipeData={recipeData.data}
+              userId={_id}
+              mealPlans={mealPlans}
+            />
           </div>
         </div>
         <StyledH1>{title}</StyledH1>
         <ContentWrapper>
-          <Container>
+          <Container style={{ paddingTop: "0" }}>
             <StyledImage
               src={`https://spoonacular.com/recipeImages/${id}-636x393.${imageType}`}
               alt={title}
@@ -223,6 +228,7 @@ const Container = styled.div`
   overflow: hidden;
   background: var(--color-midground);
   margin-top: 10px;
+  padding: 10px 0;
 `;
 
 const InfoWrapper = styled.div`

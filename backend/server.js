@@ -14,6 +14,7 @@ const {
   addNewUser,
   addFavourite,
   deleteFavourite,
+  addMealPlan,
   getMealPlan,
   getComplexSearch,
   getRecipeInformation,
@@ -44,6 +45,9 @@ express()
   // *** Favourite meals endpoints ***
   .put("/favourite", dbConnect, addFavourite)
   .delete("/favourite", dbConnect, deleteFavourite)
+
+  // *** Meal plans endpoints *** 
+  .post("/mealplans", dbConnect, addMealPlan)
 
   // Spoonacular API endpoints
   // -------------------------------
