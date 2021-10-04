@@ -33,4 +33,8 @@ const capitalizeFirstLetter = (string) => {
   return string.toUpperCase().split("")[0] + string.substring(1);
 };
 
-module.exports = { getMinMax, getQueryString, capitalizeFirstLetter };
+module.exports = {
+  getMinMax,
+  getQueryString,
+  capitalizeFirstLetter,
+};

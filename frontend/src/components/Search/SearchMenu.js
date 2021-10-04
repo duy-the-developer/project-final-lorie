@@ -11,10 +11,10 @@ const SearchMenu = () => {
       <StyledNavLink to="/search/quick-search" exact>
         <StyledH1>Quick meal plans</StyledH1>
       </StyledNavLink>
-      <Underline />
+      <Underline style={{ marginTop: "-20px" }} />
       {mealTypes.map((meal) => {
         return (
-          <>
+          <div key={meal} style={{ height: "40px" }}>
             <StyledNavLink
               to={`/search/custom-search/${meal.toLowerCase()}`}
               exact
@@ -22,7 +22,7 @@ const SearchMenu = () => {
               <StyledH1>{meal}</StyledH1>
             </StyledNavLink>
             <Underline />
-          </>
+          </div>
         );
       })}
     </Wrapper>
@@ -56,7 +56,7 @@ const StyledH1 = styled.h1`
 `;
 
 const Underline = styled.div`
-  margin-top: -20px;
+  margin-top: -10px;
   border-top: 10px solid var(--color-underline2);
   z-index: 0;
 `;

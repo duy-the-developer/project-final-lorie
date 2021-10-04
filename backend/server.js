@@ -15,9 +15,11 @@ const {
   addFavourite,
   deleteFavourite,
   addMealPlan,
+  addRecipeToMealPlan,
   getMealPlan,
   getComplexSearch,
   getRecipeInformation,
+  getPersonalMealPlan,
 } = require("./handlers");
 
 express()
@@ -46,8 +48,10 @@ express()
   .put("/favourite", dbConnect, addFavourite)
   .delete("/favourite", dbConnect, deleteFavourite)
 
-  // *** Meal plans endpoints *** 
+  // *** Meal plans endpoints ***
   .post("/mealplans", dbConnect, addMealPlan)
+  .get("/mealplans/:userId", dbConnect, getPersonalMealPlan)
+  .put("/mealplans", dbConnect, addRecipeToMealPlan)
 
   // Spoonacular API endpoints
   // -------------------------------

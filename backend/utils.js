@@ -1,4 +1,4 @@
-const { query } = require("express");
+// const { query } = require("express");
 
 const sendResponse = ({
   res,
@@ -40,4 +40,42 @@ const getQueryString = (queryObject) => {
   return result;
 };
 
-module.exports = { sendResponse, getMinMax, getQueryString };
+const getTotalNutrition = (mealPlan) => {
+  const { recipes } = mealPlan;
+  let totalCal = 0;
+  let totalCarbs = 0;
+  let totalProtein = 0;
+  let totalFat = 0;
+
+  recipes.map((recipe) => {
+    const {
+      nutrition: { calories, carbs, fat, protein },
+    } = recipe;
+
+    // console.log(calories, carbs, fat, protein);
+
+    const caloriesAsNum = calories.replace("k", "") * 1;
+    const carbsAsNum = carbs.replace("g", "") * 1;
+    const fatAsNum = fat.replace("g", "") * 1;
+    const proteinAsNum = protein.replace("g", "") * 1;
+
+    // console.log(`caloriesAsNum`, caloriesAsNum, `type`, typeof caloriesAsNum);
+    // console.log(`carbsAsNum`, carbsAsNum, `type`, typeof carbsAsNum);
+    // console.log(`fatAsNum`, fatAsNum, `type`, typeof fatAsNum);
+    // console.log(`proteinAsNum`, proteinAsNum, `type`, typeof proteinAsNum);
+
+    totalCal += caloriesAsNum;
+    totalCarbs += carbsAsNum;
+    totalFat += fatAsNum;
+    totalProtein += proteinAsNum;
+  });
+
+  return {
+    totalCal: totalCal,
+    totalCarbs: totalCarbs,
+    totalFat: totalFat,
+    totalProtein: totalProtein,
+  };
+};
+
+module.exports = { sendResponse, getMinMax, getQueryString, getTotalNutrition };

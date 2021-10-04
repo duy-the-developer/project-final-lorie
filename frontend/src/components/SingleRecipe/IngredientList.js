@@ -17,7 +17,7 @@ const IngredientList = ({ ingredients }) => {
         const roundedAmount = Math.round(amount);
 
         return (
-          <IngredientWrapper>
+          <IngredientWrapper key={`${originalName}_${amount}${unitShort}`}>
             <StyledImage
               src={`https://spoonacular.com/cdn/ingredients_100x100/${image}`}
             ></StyledImage>

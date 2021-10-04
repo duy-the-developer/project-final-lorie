@@ -26,10 +26,10 @@ const CustomSearch = () => {
   // INITIATE STATES
   const { type } = useParams();
   console.log(capitalizeFirstLetter(type));
-  const [calories, setCalories] = useState(null);
-  const [carbsPercentage, setCarbsPercentage] = useState(null);
-  const [proteinPercentage, setProteinPercentage] = useState(null);
-  const [fatPercentage, setFatPercentage] = useState(null);
+  const [calories, setCalories] = useState("");
+  const [carbsPercentage, setCarbsPercentage] = useState("");
+  const [proteinPercentage, setProteinPercentage] = useState("");
+  const [fatPercentage, setFatPercentage] = useState("");
   const [cuisine, setCuisine] = useState("");
   const [isAdvancedSearch, setIsAdvancedSearch] = useState(false);
   const [diet, setDiet] = useState("");

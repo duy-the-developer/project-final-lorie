@@ -7,7 +7,7 @@ const request = require("request-promise");
 
 // use this package to generate unique ids: https://www.npmjs.com/package/uuid
 const { v4: uuidv4 } = require("uuid");
-const { sendResponse, getQueryString } = require("./utils");
+const { sendResponse, getQueryString, getTotalNutrition } = require("./utils");
 const { testData } = require("./testData");
 
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
@@ -114,8 +114,6 @@ const addNewUser = async (req, res) => {
     },
     user,
   } = req;
-
-  console.log(req.body);
 
   // INITIATE NEW USER OBJECT
   const newUserObj = {
@@ -227,6 +225,35 @@ const deleteFavourite = async (req, res) => {
   }
 };
 
+const getPersonalMealPlan = async (req, res) => {
+  const {
+    client,
+    db,
+    params: { userId },
+  } = req;
+
+  console.log(userId);
+
+  const query = { _id: userId };
+
+  try {
+    const user = await db.collection("users").find(query).toArray();
+
+    sendResponse({
+      res: res,
+      status: 200,
+      message: `Meal plans for user id ${userId} found`,
+      data: user[0].mealPlans,
+    });
+
+    client.close();
+  } catch (error) {
+    console.log(error);
+    sendResponse({ ...errorObject, res: res });
+    client.close();
+  }
+};
+
 const addMealPlan = async (req, res) => {
   const {
     client,
@@ -242,6 +269,12 @@ const addMealPlan = async (req, res) => {
         id: uuidv4(),
         name: newPlanName,
         recipes: [],
+        totalNutrition: {
+          totalCal: 0,
+          totalCarbs: 0,
+          totalFat: 0,
+          totalProtein: 0,
+        },
       },
     },
   };
@@ -249,10 +282,80 @@ const addMealPlan = async (req, res) => {
   try {
     await db.collection("users").updateOne(query, updateObj);
 
-    sendResponse({ res: res, status: 200, data: req.body });
+    const user = await db.collection("users").find(query).toArray();
+
+    sendResponse({
+      res: res,
+      status: 200,
+      data: user[0].mealPlans,
+    });
     client.close();
     console.log(`disconnected!`);
 
+    client.close();
+  } catch (error) {
+    console.log(error);
+    sendResponse({ ...errorObject, res: res });
+    client.close();
+  }
+};
+
+const addRecipeToMealPlan = async (req, res) => {
+  const {
+    client,
+    db,
+    body: { recipeId, information, instructions, nutrition, userId, planId },
+  } = req;
+
+  const query = { _id: userId };
+
+  try {
+    // CONNECT TO DB AND GET MEALPLANS
+    const user = await db.collection("users").find(query).toArray();
+    const { mealPlans } = user[0];
+
+    const recipeObject = {
+      id: recipeId,
+      information: information,
+      instructions: instructions,
+      nutrition: nutrition,
+    };
+
+    // console.log(recipeObject);
+
+    // FIND MEALPLAN WITH PLAN ID AND UPDATE RECIPES ARRAY
+    const updatedPlans = mealPlans.map((plan) => {
+      if (plan.id === planId) {
+        // Update recipes array
+        plan = {
+          ...plan,
+          recipes: [...plan.recipes, recipeObject],
+        };
+
+        // Recalculate total meal nutrition
+        return (plan = { ...plan, totalNutrition: getTotalNutrition(plan) });
+      } else {
+        return (plan = { ...plan });
+      }
+    });
+
+    console.log(updatedPlans);
+
+    // UPDATE DB DOCUMENT
+    const updateObj = {
+      $set: {
+        mealPlans: updatedPlans,
+      },
+    };
+
+    await db.collection("users").updateOne(query, updateObj);
+
+    sendResponse({
+      res: res,
+      status: 200,
+      message: "Recipe added to meal plan successfully",
+      data: updatedPlans,
+    });
     client.close();
   } catch (error) {
     console.log(error);
@@ -272,7 +375,6 @@ const getMealPlan = async (req, res) => {
     )
       .then((res) => JSON.parse(res))
       .then((data) => {
-        console.log(data);
         resData = data;
       });
 
@@ -293,15 +395,12 @@ const getComplexSearch = async (req, res) => {
 
   const queryString = getQueryString(req.query);
 
-  console.log(`queryString`, queryString);
-
   try {
     await request(
       `https://api.spoonacular.com/recipes/complexSearch?apiKey=${SPOONACULAR_APIKEY}&instructionsRequired=true&sortDirection=desc&addRecipeInformation=true${queryString}`
     )
       .then((res) => JSON.parse(res))
       .then((data) => {
-        console.log(data);
         resData = data;
       });
 
@@ -322,47 +421,44 @@ const getRecipeInformation = async (req, res) => {
   let resData = null;
 
   try {
-    // // GET RECIPE INFO FROM SPOONACULAR
+    // // // GET RECIPE INFO FROM SPOONACULAR
+    await request(
+      `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=${SPOONACULAR_APIKEY}`
+    )
+      .then((res) => JSON.parse(res))
+      .then((data) => {
+        resData = { ...resData, information: data };
+      });
+
+    // (NO LONGER NEEDED) GET INGREDIENTS FROM SPOONACULAR
     // await request(
-    //   `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=${SPOONACULAR_APIKEY}`
+    //   `https://api.spoonacular.com/recipes/${id}/ingredientWidget.json/?apiKey=${SPOONACULAR_APIKEY}`
     // )
     //   .then((res) => JSON.parse(res))
     //   .then((data) => {
     //     console.log(data);
-    //     resData = { ...resData, information: data };
+    //     resData = { ...resData, ingredients: data.ingredients };
     //   });
 
-    // // (NO LONGER NEEDED) GET INGREDIENTS FROM SPOONACULAR
-    // // await request(
-    // //   `https://api.spoonacular.com/recipes/${id}/ingredientWidget.json/?apiKey=${SPOONACULAR_APIKEY}`
-    // // )
-    // //   .then((res) => JSON.parse(res))
-    // //   .then((data) => {
-    // //     console.log(data);
-    // //     resData = { ...resData, ingredients: data.ingredients };
-    // //   });
+    // GET ANALYZED INSTRUCTIONS FROM SPOONACULAR
+    await request(
+      `https://api.spoonacular.com/recipes/${id}/analyzedInstructions/?apiKey=${SPOONACULAR_APIKEY}`
+    )
+      .then((res) => JSON.parse(res))
+      .then((data) => {
+        resData = { ...resData, instructions: data[0].steps };
+      });
 
-    // // GET ANALYZED INSTRUCTIONS FROM SPOONACULAR
-    // await request(
-    //   `https://api.spoonacular.com/recipes/${id}/analyzedInstructions/?apiKey=${SPOONACULAR_APIKEY}`
-    // )
-    //   .then((res) => JSON.parse(res))
-    //   .then((data) => {
-    //     console.log(data);
-    //     resData = { ...resData, instructions: data[0].steps };
-    //   });
+    // GET NUTRITION FROM SPOONACULAR
+    await request(
+      `https://api.spoonacular.com/recipes/${id}/nutritionWidget.json/?apiKey=${SPOONACULAR_APIKEY}`
+    )
+      .then((res) => JSON.parse(res))
+      .then((data) => {
+        resData = { ...resData, nutrition: data };
+      });
 
-    // // GET NUTRITION FROM SPOONACULAR
-    // await request(
-    //   `https://api.spoonacular.com/recipes/${id}/nutritionWidget.json/?apiKey=${SPOONACULAR_APIKEY}`
-    // )
-    //   .then((res) => JSON.parse(res))
-    //   .then((data) => {
-    //     console.log(data);
-    //     resData = { ...resData, nutrition: data };
-    //   });
-
-    resData = testData;
+    // resData = testData;
 
     sendResponse({
       res: res,
@@ -374,8 +470,6 @@ const getRecipeInformation = async (req, res) => {
     console.log(error);
     sendResponse({ ...errorObject, res: res, data: error });
   }
-
-  console.log(resData);
 };
 
 module.exports = {
@@ -389,4 +483,6 @@ module.exports = {
   addFavourite,
   deleteFavourite,
   addMealPlan,
+  getPersonalMealPlan,
+  addRecipeToMealPlan,
 };
