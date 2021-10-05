@@ -52,8 +52,8 @@ express()
   // *** Meal plans endpoints ***
   .post("/mealplans", dbConnect, addMealPlan)
   .get("/mealplans/:userId", dbConnect, getPersonalMealPlan)
-  .put("/mealplans", dbConnect, addRecipeToMealPlan)
-  .delete("/mealplans/recipe", dbConnect, removeRecipeFromMealPlan)
+  .put("/mealplans/add", dbConnect, addRecipeToMealPlan)
+  .put("/mealplans/remove", dbConnect, removeRecipeFromMealPlan)
 
   // Spoonacular API endpoints
   // -------------------------------

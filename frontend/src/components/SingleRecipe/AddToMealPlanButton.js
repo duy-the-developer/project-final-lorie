@@ -1,15 +1,11 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import React, { useEffect, useState } from "react";
 import { BsBookmarkFill } from "react-icons/bs";
 import styled from "styled-components";
-
-import { getTotalNutrition } from "../utils/utils";
 
 const AddToMealPlanButton = ({ recipeId, recipeData, userId }) => {
   const [isDisplayed, setIsDisplayed] = useState(false);
   const [newPlanName, setNewPlanName] = useState("");
   const [mealPlans, setMealPlans] = useState([]);
-  const [totalPlanNutrition, setTotalPlanNutrition] = useState(null);
 
   console.log(userId, `userId`);
 
@@ -98,7 +94,7 @@ const AddToMealPlanButton = ({ recipeId, recipeData, userId }) => {
       },
     };
 
-    fetch(`/mealplans`, reqObject)
+    fetch(`/mealplans/add`, reqObject)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
