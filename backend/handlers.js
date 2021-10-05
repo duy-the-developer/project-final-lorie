@@ -396,7 +396,7 @@ const removeRecipeFromMealPlan = async (req, res) => {
     // FIND TARGET RECIPE'S INDEX AND SPLICE IT
     const targetRecipeIndex = targetPlan.recipes.indexOf(targetRecipe);
 
-    const updatedRecipeList = targetPlan.recipes.splice(targetRecipeIndex, 1);
+    targetPlan.recipes.splice(targetRecipeIndex, 1);
 
     // RECALCULATE NUTRITIONAL DATA
     targetPlan = {
@@ -407,11 +407,11 @@ const removeRecipeFromMealPlan = async (req, res) => {
     // FIND TARGET PLAN'S INDEX AND REPLACE IT WITH NEW PLAN
     const targetPlanIndex = mealPlans.indexOf(targetPlan);
 
-    let updatedPlans = mealPlans.splice(targetPlanIndex, 1, updatedRecipeList);
+    mealPlans.splice(targetPlanIndex, 1, targetPlan);
 
     const updateObj = {
       $set: {
-        mealPlans: updatedPlans,
+        mealPlans: mealPlans,
       },
     };
 
@@ -421,7 +421,7 @@ const removeRecipeFromMealPlan = async (req, res) => {
       res: res,
       status: 200,
       message: `Recipe ${recipeId} removed from meal plan ${planId}`,
-      data: updatedPlans,
+      data: user[0],
     });
   } catch (error) {
     console.log(error);

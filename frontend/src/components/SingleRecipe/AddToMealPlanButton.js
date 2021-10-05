@@ -81,7 +81,11 @@ const AddToMealPlanButton = ({ recipeId, recipeData }) => {
 
   return (
     <Wrapper>
-      <div onClick={() => setIsDisplayed(!isDisplayed)}>
+      <div
+        onClick={() => {
+          setIsDisplayed(!isDisplayed);
+        }}
+      >
         <StyledBookMark />
       </div>
       <MealPlanList
@@ -106,15 +110,11 @@ const AddToMealPlanButton = ({ recipeId, recipeData }) => {
           {mealPlans &&
             isUpdated &&
             mealPlans.map((mealPlan) => {
+              console.log(isUpdated);
               const {
                 name,
                 id,
-                totalNutrition: {
-                  totalCal,
-                  totalCarbs,
-                  totalFat,
-                  totalProtein,
-                },
+                totalNutrition: { totalCal },
                 recipes,
               } = mealPlan;
               return (
