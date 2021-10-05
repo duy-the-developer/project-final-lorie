@@ -310,18 +310,17 @@ const addRecipeToMealPlan = async (req, res) => {
   const query = { _id: userId };
 
   try {
-    // CONNECT TO DB AND GET MEALPLANS
+    // CONNECT TO DB AND GET MEAL PLANS
     const user = await db.collection("users").find(query).toArray();
     const { mealPlans } = user[0];
 
+    // INITIATE RECIPE OBJECT
     const recipeObject = {
       id: recipeId,
       information: information,
       instructions: instructions,
       nutrition: nutrition,
     };
-
-    // console.log(recipeObject);
 
     // FIND MEALPLAN WITH PLAN ID AND UPDATE RECIPES ARRAY
     const updatedPlans = mealPlans.map((plan) => {
@@ -357,6 +356,71 @@ const addRecipeToMealPlan = async (req, res) => {
       data: updatedPlans,
     });
     client.close();
+  } catch (error) {
+    console.log(error);
+    sendResponse({ ...errorObject, res: res });
+    client.close();
+  }
+};
+
+const removeRecipeFromMealPlan = async (req, res) => {
+  const {
+    client,
+    db,
+    body: { recipeId, planId, userId },
+  } = req;
+
+  try {
+    // GET MEAL PLANS
+    const query = {
+      _id: userId,
+    };
+    const user = await db.collection("users").find(query).toArray();
+
+    const mealPlans = user[0].mealPlans;
+    console.log(mealPlans);
+
+    // FIND THE TARGET PLAN
+    let targetPlan = mealPlans.find((plan) => plan.id === planId);
+
+    // FIND TARGET RECIPE
+    const targetRecipe = targetPlan.recipes.find(
+      (recipe) => recipe.id === recipeId
+    );
+
+    // FIND TARGET RECIPE'S INDEX AND SPLICE IT
+    const targetRecipeIndex = targetPlan.recipes.indexOf(targetRecipe);
+
+    const updatedRecipeList = targetPlan.recipes.splice(targetRecipeIndex, 1);
+
+    // RECALCULATE NUTRITIONAL DATA
+    targetPlan = {
+      ...targetPlan,
+      totalNutrition: getTotalNutrition(targetPlan),
+    };
+
+    // FIND TARGET PLAN'S INDEX AND REPLACE IT WITH NEW PLAN
+    const targetPlanIndex = mealPlans.indexOf(targetPlan);
+
+    let updatedPlans = mealPlans.splice(targetPlanIndex, 1, updatedRecipeList);
+
+    console.log(`updatedPlans`, updatedPlans);
+    console.log(`targetPlan`, targetPlan);
+
+    const updateObj = {
+      $set: {
+        mealPlans: updatedPlans,
+      },
+    };
+
+    // await db.collection("users").updateOne(query, updateObj);
+
+    sendResponse({
+      res: res,
+      status: 200,
+      message: `Recipe ${recipeId} removed from meal plan ${planId}`,
+      data: updatedPlans,
+    });
   } catch (error) {
     console.log(error);
     sendResponse({ ...errorObject, res: res });
@@ -485,4 +549,5 @@ module.exports = {
   addMealPlan,
   getPersonalMealPlan,
   addRecipeToMealPlan,
+  removeRecipeFromMealPlan,
 };

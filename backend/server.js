@@ -20,6 +20,7 @@ const {
   getComplexSearch,
   getRecipeInformation,
   getPersonalMealPlan,
+  removeRecipeFromMealPlan,
 } = require("./handlers");
 
 express()
@@ -52,6 +53,7 @@ express()
   .post("/mealplans", dbConnect, addMealPlan)
   .get("/mealplans/:userId", dbConnect, getPersonalMealPlan)
   .put("/mealplans", dbConnect, addRecipeToMealPlan)
+  .delete("/mealplans/recipe", dbConnect, removeRecipeFromMealPlan)
 
   // Spoonacular API endpoints
   // -------------------------------
