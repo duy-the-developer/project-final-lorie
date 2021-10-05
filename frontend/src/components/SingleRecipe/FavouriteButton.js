@@ -1,10 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { AiFillStar } from "react-icons/ai";
 import styled from "styled-components";
 
-const FavouriteButton = ({ recipeId, recipeData, userId, favouriteMeals }) => {
+import { UserContext } from "../ContextProviders/UserContext";
+
+const FavouriteButton = ({ recipeId, recipeData, userId }) => {
   // INITIALIZE STATES
   const [isFavouriteByUser, setIsFavouriteByUser] = useState(false);
+  const {
+    state: {
+      userContextData: { favouriteMeals },
+    },
+    action: { getUserInfo },
+  } = useContext(UserContext);
 
   // CHECK IF USER ALREADY FAVOURITE THIS RECIPE
   useEffect(() => {
@@ -45,7 +53,7 @@ const FavouriteButton = ({ recipeId, recipeData, userId, favouriteMeals }) => {
       fetch(`/favourite`, reqObject)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+          getUserInfo(data);
         })
         .catch((error) => {
           console.log(error);
@@ -66,7 +74,7 @@ const FavouriteButton = ({ recipeId, recipeData, userId, favouriteMeals }) => {
       fetch(`/favourite`, reqObject)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+          getUserInfo(data);
         })
         .catch((error) => {
           console.log(error);

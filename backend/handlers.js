@@ -179,10 +179,13 @@ const addFavourite = async (req, res) => {
   try {
     await db.collection("users").updateOne(query, updateObj);
 
+    const user = await db.collection("users").find(query).toArray();
+
     sendResponse({
       res: res,
       status: 200,
       message: `Recipe id:${id} added to favourite`,
+      data: user[0],
     });
     client.close();
   } catch (error) {
@@ -212,10 +215,13 @@ const deleteFavourite = async (req, res) => {
   try {
     await db.collection("users").updateOne(query, updateObj);
 
+    const user = await db.collection("users").find(query).toArray();
+
     sendResponse({
       res: res,
       status: 200,
       message: `Remove meal ${id} from favourite successful`,
+      data: user[0],
     });
     client.close();
   } catch (error) {
@@ -258,7 +264,7 @@ const addMealPlan = async (req, res) => {
   const {
     client,
     db,
-    body: { id, userId, newPlanName },
+    body: { userId, newPlanName },
   } = req;
 
   const query = { _id: userId };
@@ -287,7 +293,7 @@ const addMealPlan = async (req, res) => {
     sendResponse({
       res: res,
       status: 200,
-      data: user[0].mealPlans,
+      data: user[0],
     });
     client.close();
     console.log(`disconnected!`);
@@ -353,7 +359,7 @@ const addRecipeToMealPlan = async (req, res) => {
       res: res,
       status: 200,
       message: "Recipe added to meal plan successfully",
-      data: updatedPlans,
+      data: user[0],
     });
     client.close();
   } catch (error) {
@@ -416,6 +422,42 @@ const removeRecipeFromMealPlan = async (req, res) => {
       status: 200,
       message: `Recipe ${recipeId} removed from meal plan ${planId}`,
       data: updatedPlans,
+    });
+  } catch (error) {
+    console.log(error);
+    sendResponse({ ...errorObject, res: res });
+    client.close();
+  }
+};
+
+const deleteMealPlan = async (req, res) => {
+  const {
+    client,
+    db,
+    body: { userId, planIndex, planId },
+  } = req;
+
+  try {
+    const query = { _id: userId };
+    const user = await db.collection("users").find(query).toArray();
+
+    const { mealPlans } = user[0];
+
+    mealPlans.splice(planIndex, 1);
+
+    const updateObj = {
+      $set: {
+        mealPlans: mealPlans,
+      },
+    };
+
+    await db.collection("users").updateOne(query, updateObj);
+
+    sendResponse({
+      res: res,
+      status: 200,
+      message: `Meal plan ${planId} deleted successfully`,
+      data: user[0],
     });
   } catch (error) {
     console.log(error);
@@ -546,4 +588,5 @@ module.exports = {
   getPersonalMealPlan,
   addRecipeToMealPlan,
   removeRecipeFromMealPlan,
+  deleteMealPlan,
 };

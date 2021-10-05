@@ -1,53 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { BsBookmarkFill } from "react-icons/bs";
 import styled from "styled-components";
 
-const AddToMealPlanButton = ({ recipeId, recipeData, userId }) => {
+import { UserContext } from "../ContextProviders/UserContext";
+
+const AddToMealPlanButton = ({ recipeId, recipeData }) => {
   const [isDisplayed, setIsDisplayed] = useState(false);
   const [newPlanName, setNewPlanName] = useState("");
-  const [mealPlans, setMealPlans] = useState([]);
+  const [isUpdated, setIsUpdated] = useState(true);
 
-  console.log(userId, `userId`);
-
-  useEffect(() => {
-    const reqObject = {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    };
-
-    console.log(`userId in MealPlan Button`, userId);
-
-    fetch(`/mealplans/${userId}`, reqObject)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setMealPlans(data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  const handleDisplayMealPlanMenu = (e) => {
-    e.preventDefault();
-
-    setIsDisplayed(!isDisplayed);
-  };
+  const {
+    state: {
+      userContextData: { _id, mealPlans },
+    },
+    action: { getUserInfo },
+  } = useContext(UserContext);
 
   const handleAddingNewPlan = (e) => {
     e.preventDefault();
 
-    const { information, instructions, nutrition } = recipeData;
-
     const bodyObject = {
-      id: recipeId,
-      information: information,
-      instructions: instructions,
-      nutrition: nutrition,
-      userId: userId,
+      userId: _id,
       newPlanName: newPlanName,
     };
 
@@ -63,8 +36,7 @@ const AddToMealPlanButton = ({ recipeId, recipeData, userId }) => {
     fetch(`/mealplans`, reqObject)
       .then((res) => res.json())
       .then((data) => {
-        setMealPlans(data.data);
-        console.log(data);
+        getUserInfo(data);
       })
       .catch((error) => console.log(error));
 
@@ -73,6 +45,7 @@ const AddToMealPlanButton = ({ recipeId, recipeData, userId }) => {
 
   const handleAddRecipeToMealPlan = (e) => {
     e.preventDefault();
+    setIsUpdated(false);
 
     const { information, instructions, nutrition } = recipeData;
 
@@ -81,7 +54,7 @@ const AddToMealPlanButton = ({ recipeId, recipeData, userId }) => {
       information: information,
       instructions: instructions,
       nutrition: nutrition,
-      userId: userId,
+      userId: _id,
       planId: e.target.id,
     };
 
@@ -97,17 +70,18 @@ const AddToMealPlanButton = ({ recipeId, recipeData, userId }) => {
     fetch(`/mealplans/add`, reqObject)
       .then((res) => res.json())
       .then((data) => {
+        getUserInfo(data);
         console.log(data);
-        setMealPlans(data.data);
       })
       .catch((error) => console.log(error));
 
     setIsDisplayed(false);
+    setIsUpdated(true);
   };
 
   return (
     <Wrapper>
-      <div onClick={handleDisplayMealPlanMenu}>
+      <div onClick={() => setIsDisplayed(!isDisplayed)}>
         <StyledBookMark />
       </div>
       <MealPlanList
@@ -128,26 +102,35 @@ const AddToMealPlanButton = ({ recipeId, recipeData, userId }) => {
           />
           <StyledButton onClick={handleAddingNewPlan}>Add</StyledButton>
         </NewPlanSection>
-        {mealPlans[0] &&
-          mealPlans.map((mealPlan) => {
-            const {
-              name,
-              id,
-              totalNutrition: { totalCal, totalCarbs, totalFat, totalProtein },
-              recipes,
-            } = mealPlan;
-            return (
-              <MealPlanItem
-                key={id}
-                name={name}
-                id={id}
-                onClick={handleAddRecipeToMealPlan}
-              >
-                {name} <br />
-                Total: {recipes.length} recipe(s), {totalCal} kCal
-              </MealPlanItem>
-            );
-          })}
+        <NewPlanSection style={{ rowGap: "10px" }}>
+          {mealPlans &&
+            isUpdated &&
+            mealPlans.map((mealPlan) => {
+              const {
+                name,
+                id,
+                totalNutrition: {
+                  totalCal,
+                  totalCarbs,
+                  totalFat,
+                  totalProtein,
+                },
+                recipes,
+              } = mealPlan;
+              return (
+                <MealPlanItem
+                  value={newPlanName}
+                  key={id}
+                  name={name}
+                  id={id}
+                  onClick={handleAddRecipeToMealPlan}
+                >
+                  {name} <br />
+                  Total: {recipes.length} recipe(s), {totalCal} kCal
+                </MealPlanItem>
+              );
+            })}
+        </NewPlanSection>
       </MealPlanList>
     </Wrapper>
   );

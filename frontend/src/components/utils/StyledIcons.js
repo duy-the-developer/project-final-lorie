@@ -2,9 +2,8 @@ import React from "react";
 import { BiSliderAlt, BiLoader } from "react-icons/bi";
 import { RiHomeLine, RiSearch2Line, RiBookmark2Line } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
-import { VscLoading } from "react-icons/vsc";
 import styled, { keyframes } from "styled-components";
-import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowBack, IoMdClose } from "react-icons/io";
 
 // SLIDER ICON
 const StyledSliderIcon = () => {
@@ -104,6 +103,19 @@ const Back = styled(IoIosArrowBack)`
   max-height: 30px;
 `;
 
+// DELETE ICON
+const StyledDeleteIcon = () => {
+  return <Delete />;
+};
+
+const Delete = styled(IoMdClose)`
+  height: var(--icon-size);
+  width: var(--icon-size);
+  max-width: 30px;
+  max-height: 30px;
+  color: tomato;
+`;
+
 export {
   StyledSliderIcon,
   StyledHomeIcon,
@@ -112,4 +124,5 @@ export {
   StyledProfileIcon,
   StyledLoaderIcon,
   StyledBackIcon,
+  StyledDeleteIcon,
 };

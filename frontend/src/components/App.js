@@ -13,6 +13,7 @@ import QuickSearch from "./Search/QuickSearch";
 import GlobalStyles from "./utils/GlobalStyles";
 import LoginPush from "./utils/LoginPush";
 import CustomSearch from "./Search/CustomSearch";
+import Bookmark from "./Bookmark/Bookmark";
 import SearchMenu from "./Search/SearchMenu";
 import SingleRecipe from "./SingleRecipe/SingleRecipe";
 
@@ -74,6 +75,9 @@ const App = () => {
             </Route>
             <Route exact path="/search/custom-search/:type">
               <CustomSearch />
+            </Route>
+            <Route exact path="/bookmark">
+              <Bookmark />
             </Route>
             <Route exact path="/search/recipe/:id">
               <SingleRecipe />

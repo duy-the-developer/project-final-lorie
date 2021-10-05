@@ -34,7 +34,6 @@ const MealList = ({ mealData }) => {
 
 const Wrapper = styled.div`
   margin-top: 20px;
-  /* background-color: tomato; */
   width: inherit;
   display: flex;
   flex-wrap: wrap;
