@@ -344,8 +344,6 @@ const addRecipeToMealPlan = async (req, res) => {
       }
     });
 
-    console.log(updatedPlans);
-
     // UPDATE DB DOCUMENT
     const updateObj = {
       $set: {
@@ -355,11 +353,13 @@ const addRecipeToMealPlan = async (req, res) => {
 
     await db.collection("users").updateOne(query, updateObj);
 
+    const updatedUser = await db.collection("users").find(query).toArray();
+
     sendResponse({
       res: res,
       status: 200,
       message: "Recipe added to meal plan successfully",
-      data: user[0],
+      data: updatedUser[0],
     });
     client.close();
   } catch (error) {
