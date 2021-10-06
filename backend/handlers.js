@@ -509,43 +509,43 @@ const getRecipeInformation = async (req, res) => {
 
   try {
     // // GET RECIPE INFO FROM SPOONACULAR
+    await request(
+      `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=${SPOONACULAR_APIKEY}`
+    )
+      .then((res) => JSON.parse(res))
+      .then((data) => {
+        resData = { ...resData, information: data };
+      });
+
+    // (NO LONGER NEEDED) GET INGREDIENTS FROM SPOONACULAR
     // await request(
-    //   `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=${SPOONACULAR_APIKEY}`
+    //   `https://api.spoonacular.com/recipes/${id}/ingredientWidget.json/?apiKey=${SPOONACULAR_APIKEY}`
     // )
     //   .then((res) => JSON.parse(res))
     //   .then((data) => {
-    //     resData = { ...resData, information: data };
+    //     console.log(data);
+    //     resData = { ...resData, ingredients: data.ingredients };
     //   });
 
-    // // (NO LONGER NEEDED) GET INGREDIENTS FROM SPOONACULAR
-    // // await request(
-    // //   `https://api.spoonacular.com/recipes/${id}/ingredientWidget.json/?apiKey=${SPOONACULAR_APIKEY}`
-    // // )
-    // //   .then((res) => JSON.parse(res))
-    // //   .then((data) => {
-    // //     console.log(data);
-    // //     resData = { ...resData, ingredients: data.ingredients };
-    // //   });
+    // GET ANALYZED INSTRUCTIONS FROM SPOONACULAR
+    await request(
+      `https://api.spoonacular.com/recipes/${id}/analyzedInstructions/?apiKey=${SPOONACULAR_APIKEY}`
+    )
+      .then((res) => JSON.parse(res))
+      .then((data) => {
+        resData = { ...resData, instructions: data[0].steps };
+      });
 
-    // // GET ANALYZED INSTRUCTIONS FROM SPOONACULAR
-    // await request(
-    //   `https://api.spoonacular.com/recipes/${id}/analyzedInstructions/?apiKey=${SPOONACULAR_APIKEY}`
-    // )
-    //   .then((res) => JSON.parse(res))
-    //   .then((data) => {
-    //     resData = { ...resData, instructions: data[0].steps };
-    //   });
+    // GET NUTRITION FROM SPOONACULAR
+    await request(
+      `https://api.spoonacular.com/recipes/${id}/nutritionWidget.json/?apiKey=${SPOONACULAR_APIKEY}`
+    )
+      .then((res) => JSON.parse(res))
+      .then((data) => {
+        resData = { ...resData, nutrition: data };
+      });
 
-    // // GET NUTRITION FROM SPOONACULAR
-    // await request(
-    //   `https://api.spoonacular.com/recipes/${id}/nutritionWidget.json/?apiKey=${SPOONACULAR_APIKEY}`
-    // )
-    //   .then((res) => JSON.parse(res))
-    //   .then((data) => {
-    //     resData = { ...resData, nutrition: data };
-    //   });
-
-    resData = testData;
+    // resData = testData;
 
     sendResponse({
       res: res,

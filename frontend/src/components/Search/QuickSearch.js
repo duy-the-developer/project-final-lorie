@@ -181,13 +181,15 @@ const StyledInput = styled.input`
 
 const SearchButton = styled.button`
   margin-top: 15px;
-  font-size: 24px;
+  font-size: 20px;
+  height: 40px;
+  max-height: 40px;
   width: 100%;
-  background-color: var(--color-midground);
+  background-color: var(--color-button);
   color: var(--color-text);
   border: none;
   box-sizing: border-box;
-  border-radius: 10px;
+  border-radius: 20px;
 
   &:active {
     opacity: 0.5;

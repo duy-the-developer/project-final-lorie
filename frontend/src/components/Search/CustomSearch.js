@@ -36,6 +36,7 @@ const CustomSearch = () => {
   const [intolerances, setIntolerances] = useState("");
   const [sort, setSort] = useState(`random`);
   const [exclude, setExclude] = useState("");
+  const [include, setInclude] = useState("");
   const [mealData, setMealData] = useState(
     JSON.parse(window.localStorage.getItem(`${type}SearchLastResult`)) || null
   );
@@ -74,6 +75,7 @@ const CustomSearch = () => {
       diet: diet,
       intolerances: intolerances,
       excludeIngredients: exclude,
+      includeIngredients:include,
       type: type,
       minCalories: minCalories,
       maxCalories: maxCalories,
@@ -241,6 +243,14 @@ const CustomSearch = () => {
                 setExclude(e.target.value);
               }}
             />
+            <StyledInput
+              value={include}
+              type="string"
+              placeholder="Including (e.g. egg) (optional)"
+              onChange={(e) => {
+                setInclude(e.target.value);
+              }}
+            />
           </>
         )}
         <SearchButton onClick={handleSearchSubmit}>Search</SearchButton>
@@ -345,13 +355,15 @@ const StyledMiniInput = styled(StyledInput)`
 
 const SearchButton = styled.button`
   margin-top: 15px;
-  font-size: 24px;
+  font-size: 20px;
   width: 100%;
+  height: 40px;
+  max-height: 40px;
   background-color: var(--color-button);
   color: var(--color-text);
   border: none;
   box-sizing: border-box;
-  border-radius: 10px;
+  border-radius: 20px;
 
   &:active {
     opacity: 0.5;

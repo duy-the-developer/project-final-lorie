@@ -76,12 +76,10 @@ const StyledH1 = styled.h1`
   display: flex;
   column-gap: 10px;
   align-items: baseline;
-  /* background: tomato; */
 `;
 
 const Subtitle = styled.p`
   color: var(--color-highlight);
-  /* background: tomato; */
 `;
 
 const StyledLogin = styled.button`
