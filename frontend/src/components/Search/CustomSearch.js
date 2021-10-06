@@ -27,9 +27,12 @@ const CustomSearch = () => {
   const { type } = useParams();
   console.log(capitalizeFirstLetter(type));
   const [calories, setCalories] = useState("");
-  const [carbsPercentage, setCarbsPercentage] = useState("");
-  const [proteinPercentage, setProteinPercentage] = useState("");
-  const [fatPercentage, setFatPercentage] = useState("");
+  const [minCarbs, setMinCarbs] = useState("");
+  const [maxCarbs, setMaxCarbs] = useState("");
+  const [minProtein, setMinProtein] = useState("");
+  const [maxProtein, setMaxProtein] = useState("");
+  const [minFat, setMinFat] = useState("");
+  const [maxFat, setMaxFat] = useState("");
   const [cuisine, setCuisine] = useState("");
   const [isAdvancedSearch, setIsAdvancedSearch] = useState(false);
   const [diet, setDiet] = useState("");
@@ -56,17 +59,11 @@ const CustomSearch = () => {
     // CALCULATE TARGET MACRO VALUES AS A % OF CALORIES
     const nutritionQueryObj = {
       Calories: calories,
-      Carbs: Math.round(((carbsPercentage / 100) * calories) / 4),
-      Protein: Math.round(((proteinPercentage / 100) * calories) / 4),
-      Fat: Math.round(((fatPercentage / 100) * calories) / 9),
     };
 
     // GET MIN MAX VALUES FROM TARGET MACRO VALUES
     const {
       Calories: { minCalories, maxCalories },
-      Carbs: { minCarbs, maxCarbs },
-      Protein: { minProtein, maxProtein },
-      Fat: { minFat, maxFat },
     } = getMinMax(nutritionQueryObj);
 
     // CONSTRUCT QUERY STRING OBJECT TO BE PROCESSED
@@ -75,7 +72,7 @@ const CustomSearch = () => {
       diet: diet,
       intolerances: intolerances,
       excludeIngredients: exclude,
-      includeIngredients:include,
+      includeIngredients: include,
       type: type,
       minCalories: minCalories,
       maxCalories: maxCalories,
@@ -141,32 +138,57 @@ const CustomSearch = () => {
           <>
             <MacroInputWrapper>
               <StyledMiniInput
-                value={carbsPercentage}
+                value={minCarbs}
                 type="number"
-                placeholder="Carbs %"
+                placeholder="Min carbs"
                 onChange={(e) => {
-                  setCarbsPercentage(e.target.value);
+                  setMinCarbs(e.target.value);
                 }}
               />
               <StyledMiniInput
-                value={proteinPercentage}
+                value={minProtein}
                 type="number"
-                placeholder="Protein %"
+                placeholder="Min protein"
                 onChange={(e) => {
-                  setProteinPercentage(e.target.value);
+                  setMinProtein(e.target.value);
                 }}
               />
               <StyledMiniInput
-                value={fatPercentage}
+                value={minFat}
                 type="number"
-                placeholder="Fat %"
+                placeholder="Min fat"
                 onChange={(e) => {
-                  setFatPercentage(e.target.value);
+                  setMinFat(e.target.value);
+                }}
+              />
+            </MacroInputWrapper>
+            <MacroInputWrapper>
+              <StyledMiniInput
+                value={maxCarbs}
+                type="number"
+                placeholder="Max carbs"
+                onChange={(e) => {
+                  setMaxCarbs(e.target.value);
+                }}
+              />
+              <StyledMiniInput
+                value={maxProtein}
+                type="number"
+                placeholder="Max protein"
+                onChange={(e) => {
+                  setMaxProtein(e.target.value);
+                }}
+              />
+              <StyledMiniInput
+                value={maxFat}
+                type="number"
+                placeholder="Max fat"
+                onChange={(e) => {
+                  setMaxFat(e.target.value);
                 }}
               />
             </MacroInputWrapper>
             <StyledSelect
-              value={cuisine}
               id="cuisine"
               name="cuisine"
               onChange={(e) => {
@@ -183,7 +205,6 @@ const CustomSearch = () => {
               })}
             </StyledSelect>
             <StyledSelect
-              value={diet}
               id="diet"
               name="diet"
               onChange={(e) => {
@@ -200,7 +221,6 @@ const CustomSearch = () => {
               })}
             </StyledSelect>
             <StyledSelect
-              value={intolerances}
               id="intolerances"
               name="intolerances"
               onChange={(e) => {
@@ -217,7 +237,6 @@ const CustomSearch = () => {
               })}
             </StyledSelect>
             <StyledSelect
-              value={sort}
               id="sort"
               name="sort"
               onChange={(e) => {
@@ -340,6 +359,7 @@ const StyledSelect = styled.select`
   min-height: 40px;
   border-radius: 10px;
   color: var(--color-background);
+  padding: 0 10px;
 `;
 
 const StyledInput = styled.input`
@@ -351,6 +371,7 @@ const StyledInput = styled.input`
 
 const StyledMiniInput = styled(StyledInput)`
   width: 30%;
+  font-size: 13px;
 `;
 
 const SearchButton = styled.button`

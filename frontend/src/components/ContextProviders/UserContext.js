@@ -13,6 +13,8 @@ const initialState = {
     favouriteMeals: [],
     settings: {
       targetDailyCalories: 2000,
+      dietType: "",
+      intolerances: "",
       marcroNutrients: {
         proteinPercentage: 30,
         fatPercentage: 35,

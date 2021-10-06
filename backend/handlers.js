@@ -111,6 +111,8 @@ const addNewUser = async (req, res) => {
       proteinPercentage,
       fatPercentage,
       carbsPercentage,
+      dietType,
+      intolerances,
     },
     user,
   } = req;
@@ -125,6 +127,8 @@ const addNewUser = async (req, res) => {
     favouriteMeals: [],
     settings: {
       targetDailyCalories: targetDailyCalories,
+      dietType: dietType,
+      intolerances: intolerances,
       marcroNutrients: {
         proteinPercentage: proteinPercentage,
         fatPercentage: fatPercentage,

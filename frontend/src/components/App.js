@@ -16,6 +16,7 @@ import CustomSearch from "./Search/CustomSearch";
 import Bookmark from "./Bookmark/Bookmark";
 import SearchMenu from "./Search/SearchMenu";
 import SingleRecipe from "./SingleRecipe/SingleRecipe";
+import ProfileSetup from "./Profile/ProfileSetup";
 
 // IMPORT CONTEXT
 import { UserContext } from "./ContextProviders/UserContext";
@@ -91,6 +92,9 @@ const App = () => {
             </Route>
             <Route exact path="/profile">
               <Profile />
+            </Route>
+            <Route exact path="/profile/setup">
+              <ProfileSetup />
             </Route>
           </Switch>
         </Main>

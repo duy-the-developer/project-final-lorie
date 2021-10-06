@@ -23,7 +23,7 @@ const NavBar = () => {
       <StyledNavLink to="/bookmark" activeClassName="current" exact>
         <StyledBookMarkIcon />
       </StyledNavLink>
-      <StyledNavLink to="/profile" activeClassName="current" exact>
+      <StyledNavLink to="/profile" activeClassName="current">
         <StyledProfileIcon />
       </StyledNavLink>
     </Wrapper>

@@ -5,10 +5,11 @@ import {
   RiSearch2Line,
   RiBookmark2Line,
   RiEdit2Fill,
+  RiMailOpenLine,
 } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
 import styled, { keyframes } from "styled-components";
-import { IoIosArrowBack, IoMdClose } from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowForward, IoMdClose } from "react-icons/io";
 
 // SLIDER ICON
 const StyledSliderIcon = () => {
@@ -108,6 +109,18 @@ const Back = styled(IoIosArrowBack)`
   max-height: 30px;
 `;
 
+// FORWARD ICON
+const StyledForwardIcon = () => {
+  return <Forward />;
+};
+
+const Forward = styled(IoIosArrowForward)`
+  height: var(--icon-size);
+  width: var(--icon-size);
+  max-width: 30px;
+  max-height: 30px;
+`;
+
 // DELETE ICON
 const StyledDeleteIcon = () => {
   return <Delete />;
@@ -121,6 +134,7 @@ const Delete = styled(IoMdClose)`
   color: tomato;
 `;
 
+// EDIT ICON
 const StyledEditIcon = () => {
   return <Edit />;
 };
@@ -130,6 +144,18 @@ const Edit = styled(RiEdit2Fill)`
   width: var(--icon-size);
   max-width: 30px;
   max-height: 30px;
+`;
+
+// MAIL ICON
+const StyledMailIcon = () => {
+  return <Mail />;
+};
+
+const Mail = styled(RiMailOpenLine)`
+  height: var(--icon-size);
+  width: var(--icon-size);
+  max-width: 40px;
+  max-height: 40px;
 `;
 
 export {
@@ -142,4 +168,6 @@ export {
   StyledBackIcon,
   StyledDeleteIcon,
   StyledEditIcon,
+  StyledMailIcon,
+  StyledForwardIcon,
 };
