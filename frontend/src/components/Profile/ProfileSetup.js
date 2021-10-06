@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useHistory } from "react-router";
@@ -6,29 +6,79 @@ import { useHistory } from "react-router";
 import { StyledSliderIcon } from "../utils/StyledIcons";
 import { dietTypes, intoleranceTypes } from "../utils/cuisinesData";
 
-const ProfileSetup = () => {
-  const { user, isAuthenticated, isLoading, logout } = useAuth0();
+import { UserContext } from "../ContextProviders/UserContext";
 
-  const [calories, setCalories] = useState("");
+const ProfileSetup = () => {
+  const { user } = useAuth0();
+  const [needRefresh, setNeedRefresh] = useState(false);
+
+  const {
+    state: {
+      isLoaded,
+      userContextData: {
+        _id,
+        email,
+        family_name,
+        settings: {
+          targetDailyCalories,
+          dietType,
+          intolerances,
+          marcroNutrients: {
+            proteinPercentage,
+            fatPercentage,
+            carbsPercentage,
+          },
+        },
+      },
+    },
+    action: { getUserInfo },
+  } = useContext(UserContext);
+
+  const [caloriesDisplay, setCalories] = useState(targetDailyCalories);
   const [diet, setDiet] = useState("");
-  const [intolerances, setIntolerances] = useState("");
-  const [proteinPercentage, setProteinPercentage] = useState("");
-  const [carbsPercentage, setCarbsPercentage] = useState("");
-  const [fatPercentage, setFatPercentage] = useState("");
+  const [intolerancesDisplay, setIntolerances] = useState("");
+  const [proteinPercentageDisplay, setProteinPercentage] =
+    useState(proteinPercentage);
+  const [carbsPercentageDisplay, setCarbsPercentage] =
+    useState(carbsPercentage);
+  const [fatPercentageDisplay, setFatPercentage] = useState(fatPercentage);
 
   const history = useHistory();
 
-  const { given_name, picture } = user;
+  const { given_name, picture, sub } = user;
 
   const handleUpdateUserInfo = () => {
-    console.log(
-      calories,
-      diet,
-      intolerances,
-      proteinPercentage,
-      carbsPercentage,
-      fatPercentage
-    );
+    setNeedRefresh(true);
+
+    const bodyObject = {
+      targetDailyCalories: caloriesDisplay,
+      proteinPercentage: proteinPercentageDisplay,
+      carbsPercentage: carbsPercentageDisplay,
+      fatPercentage: fatPercentageDisplay,
+      dietType: diet,
+      intolerances: intolerancesDisplay,
+    };
+
+    // INITATE REQUEST OBJECT
+    const reqObject = {
+      method: "PUT",
+      body: JSON.stringify(bodyObject),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    };
+
+    fetch(`/user/${sub}`, reqObject)
+      .then((res) => res.json())
+      .then((parsedData) => {
+        console.log(parsedData);
+        getUserInfo(parsedData);
+        history.push("/profile");
+      })
+      .catch((error) => console.log(error));
+
+    setNeedRefresh(false);
   };
 
   return (
@@ -43,116 +93,129 @@ const ProfileSetup = () => {
         <Avatar src={picture} alt={given_name} />
       </Header>
       <Body>
-        <Section>
-          <SectionHeading>
-            <Icon>
-              <StyledSliderIcon />
-            </Icon>
-            <SectionTitle
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
-              <SectionTitle style={{ width: "100%" }}>
-                <span>Profile settings</span>
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  Nutritional and dietary preferrences
-                </span>
+        {!needRefresh && (
+          <Section>
+            <SectionHeading>
+              <Icon>
+                <StyledSliderIcon />
+              </Icon>
+              <SectionTitle
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                <SectionTitle style={{ width: "100%" }}>
+                  <span>Profile settings</span>
+                  <span style={{ fontSize: "12px", color: "grey" }}>
+                    Nutritional and dietary preferrences
+                  </span>
+                </SectionTitle>
               </SectionTitle>
-            </SectionTitle>
-          </SectionHeading>
-          <SectionBody>
-            <MenuItem>
-              <span style={{ fontSize: "12px", color: "grey" }}>
-                Diet preference
-              </span>
-              <StyledSelect
-                id="diet"
-                name="diet"
-                onChange={(e) => {
-                  setDiet(e.target.value);
-                }}
-              >
-                <option value="">Diet type - Pick one (optional)</option>
-                {dietTypes.map((diet) => {
-                  return (
-                    <option key={diet} value={diet.toLowerCase()}>
-                      {diet}
-                    </option>
-                  );
-                })}
-              </StyledSelect>
-            </MenuItem>
-            <MenuItem>
-              <span style={{ fontSize: "12px", color: "grey" }}>
-                Intolerances
-              </span>
-              <StyledSelect
-                id="intolerances"
-                name="intolerances"
-                onChange={(e) => {
-                  setIntolerances(e.target.value);
-                }}
-              >
-                <option value="">Intolerances - Pick one (optional)</option>
-                {intoleranceTypes.map((intolerance) => {
-                  return (
-                    <option key={intolerance} value={intolerance.toLowerCase()}>
-                      {intolerance}
-                    </option>
-                  );
-                })}
-              </StyledSelect>
-            </MenuItem>
-            <MenuItem>
-              <span style={{ fontSize: "12px", color: "grey" }}>
-                Target daily calories
-              </span>
-              <StyledInput
-                value={calories}
-                type="number"
-                placeholder="Target daily calories"
-                onChange={(e) => setCalories(e.target.value)}
-              ></StyledInput>
-            </MenuItem>
-            <MenuItem>
-              <span style={{ fontSize: "12px", color: "grey" }}>
-                Target daily protein
-              </span>
-              <StyledInput
-                value={proteinPercentage}
-                type="number"
-                placeholder="Daily protein %"
-                onChange={(e) => setProteinPercentage(e.target.value)}
-              ></StyledInput>
-            </MenuItem>
-            <MenuItem>
-              <span style={{ fontSize: "12px", color: "grey" }}>
-                Target daily carbs
-              </span>
-              <StyledInput
-                value={carbsPercentage}
-                type="number"
-                placeholder="Daily carbs %"
-                onChange={(e) => setCarbsPercentage(e.target.value)}
-              ></StyledInput>
-            </MenuItem>
-            <MenuItem>
-              <span style={{ fontSize: "12px", color: "grey" }}>
-                Target daily fat
-              </span>
-              <StyledInput
-                value={fatPercentage}
-                type="number"
-                placeholder="Daily fat %"
-                onChange={(e) => setFatPercentage(e.target.value)}
-              ></StyledInput>
-            </MenuItem>
-          </SectionBody>
-        </Section>
-        <UpdateButton>Update</UpdateButton>
+            </SectionHeading>
+            <SectionBody>
+              <MenuItem>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  Diet preference
+                </span>
+                <StyledSelect
+                  id="diet"
+                  name="diet"
+                  onChange={(e) => {
+                    setDiet(e.target.value);
+                  }}
+                >
+                  <option value="">Diet type - Pick one (optional)</option>
+                  {dietTypes.map((diet) => {
+                    return (
+                      <option key={diet} value={diet.toLowerCase()}>
+                        {diet}
+                      </option>
+                    );
+                  })}
+                </StyledSelect>
+              </MenuItem>
+              <MenuItem>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  Intolerances
+                </span>
+                <StyledSelect
+                  id="intolerances"
+                  name="intolerances"
+                  onChange={(e) => {
+                    setIntolerances(e.target.value);
+                  }}
+                >
+                  <option value="">Intolerances - Pick one (optional)</option>
+                  {intoleranceTypes.map((intolerance) => {
+                    return (
+                      <option
+                        key={intolerance}
+                        value={intolerance.toLowerCase()}
+                      >
+                        {intolerance}
+                      </option>
+                    );
+                  })}
+                </StyledSelect>
+              </MenuItem>
+              <MenuItem>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  Target daily calories
+                </span>
+                <StyledInput
+                  value={caloriesDisplay}
+                  type="number"
+                  placeholder="Target daily calories"
+                  onChange={(e) => setCalories(e.target.value)}
+                ></StyledInput>
+              </MenuItem>
+              <MenuItem>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  Target daily protein
+                </span>
+                <StyledInput
+                  value={proteinPercentageDisplay}
+                  type="number"
+                  placeholder="Daily protein %"
+                  onChange={(e) => setProteinPercentage(e.target.value)}
+                ></StyledInput>
+              </MenuItem>
+              <MenuItem>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  Target daily carbs
+                </span>
+                <StyledInput
+                  value={carbsPercentageDisplay}
+                  type="number"
+                  placeholder="Daily carbs %"
+                  onChange={(e) => setCarbsPercentage(e.target.value)}
+                ></StyledInput>
+              </MenuItem>
+              <MenuItem>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  Target daily fat
+                </span>
+                <StyledInput
+                  value={fatPercentageDisplay}
+                  type="number"
+                  placeholder="Daily fat %"
+                  onChange={(e) => setFatPercentage(e.target.value)}
+                ></StyledInput>
+              </MenuItem>
+            </SectionBody>
+          </Section>
+        )}
+        <UpdateButton
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleUpdateUserInfo();
+          }}
+        >
+          Update
+        </UpdateButton>
       </Body>
     </Wrapper>
   );

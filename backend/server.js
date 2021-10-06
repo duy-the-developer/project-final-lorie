@@ -11,6 +11,7 @@ const {
   dbConnect,
   verifyUser,
   getUserInfo,
+  updateUser,
   addNewUser,
   addFavourite,
   addMealPlan,
@@ -45,6 +46,7 @@ express()
   // *** Users related endpoints ***
   .get("/user/:sub", dbConnect, verifyUser, getUserInfo)
   .post("/user/add", dbConnect, addNewUser)
+  .put("/user/:sub", dbConnect, updateUser)
 
   // *** Favourite meals endpoints ***
   .put("/favourite", dbConnect, addFavourite)

@@ -114,7 +114,6 @@ const addNewUser = async (req, res) => {
       dietType,
       intolerances,
     },
-    user,
   } = req;
 
   // INITIATE NEW USER OBJECT
@@ -152,6 +151,57 @@ const addNewUser = async (req, res) => {
       message: "New user was created.",
     });
 
+    client.close();
+  } catch (error) {
+    console.log(error);
+    sendResponse({ ...errorObject, res: res });
+    client.close();
+  }
+};
+
+const updateUser = async (req, res) => {
+  const {
+    client,
+    db,
+    body: {
+      targetDailyCalories,
+      proteinPercentage,
+      fatPercentage,
+      carbsPercentage,
+      dietType,
+      intolerances,
+    },
+    params: { sub },
+  } = req;
+
+  try {
+    const query = { _id: sub };
+
+    const updateObj = {
+      $set: {
+        settings: {
+          dietType: dietType,
+          intolerances: intolerances,
+          targetDailyCalories: targetDailyCalories,
+          marcroNutrients: {
+            proteinPercentage: proteinPercentage,
+            fatPercentage: fatPercentage,
+            carbsPercentage: carbsPercentage,
+          },
+        },
+      },
+    };
+
+    await db.collection("users").update(query, updateObj);
+
+    const updatedUser = await db.collection("users").find(query).toArray();
+
+    sendResponse({
+      res: res,
+      status: 200,
+      message: "Test OKAY!",
+      data: updatedUser[0],
+    });
     client.close();
   } catch (error) {
     console.log(error);
@@ -578,4 +628,5 @@ module.exports = {
   addRecipeToMealPlan,
   removeRecipeFromMealPlan,
   deleteMealPlan,
+  updateUser,
 };

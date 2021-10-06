@@ -12,6 +12,8 @@ import {
 import { UserContext } from "../ContextProviders/UserContext";
 import { useHistory } from "react-router";
 
+import { capitalizeFirstLetter } from "../utils/utils";
+
 const Profile = () => {
   const { user, isAuthenticated, isLoading, logout } = useAuth0();
 
@@ -143,13 +145,13 @@ const Profile = () => {
                 <span style={{ fontSize: "12px", color: "grey" }}>
                   Diet preference
                 </span>
-                <span>{dietType}</span>
+                <span>{capitalizeFirstLetter(dietType)}</span>
               </MenuItem>
               <MenuItem>
                 <span style={{ fontSize: "12px", color: "grey" }}>
                   Intolerances
                 </span>
-                <span>{intolerances}</span>
+                <span>{capitalizeFirstLetter(intolerances)}</span>
               </MenuItem>
             </SectionBody>
           </Section>

@@ -48,7 +48,7 @@ const App = () => {
         },
       };
 
-      // FETCH BE API END POINT /user/:sub
+      // VERIFY AND FETCH USER'S PROFILE FROM BACKEND
       fetch(`/user/${sub}`, reqObject)
         .then((res) => res.json())
         .then((parsedData) => {
