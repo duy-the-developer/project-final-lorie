@@ -19,6 +19,7 @@ import SingleRecipe from "./SingleRecipe/SingleRecipe";
 
 // IMPORT CONTEXT
 import { UserContext } from "./ContextProviders/UserContext";
+import SingleMealPlan from "./Bookmark/SingleMealPlan";
 
 const App = () => {
   // GET DATA FROM AUTH0
@@ -78,6 +79,9 @@ const App = () => {
             </Route>
             <Route exact path="/bookmark">
               <Bookmark />
+            </Route>
+            <Route exact path="/bookmark/:planIndex/:planId">
+              <SingleMealPlan />
             </Route>
             <Route exact path="/search/recipe/:id">
               <SingleRecipe />

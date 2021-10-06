@@ -17,6 +17,7 @@ const AddToMealPlanButton = ({ recipeId, recipeData }) => {
   } = useContext(UserContext);
 
   const handleAddingNewPlan = (e) => {
+    e.stopPropagation();
     e.preventDefault();
 
     const bodyObject = {
@@ -44,6 +45,7 @@ const AddToMealPlanButton = ({ recipeId, recipeData }) => {
   };
 
   const handleAddRecipeToMealPlan = (e) => {
+    e.stopPropagation();
     e.preventDefault();
     setIsUpdated(false);
 

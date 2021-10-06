@@ -114,13 +114,13 @@ const Bookmark = () => {
                       flexDirection: "column",
                       rowGap: "2px",
                     }}
-                    to={`/bookmark/${id}`}
+                    to={`/bookmark/${planIndex}/${id}`}
                   >
                     <StyledH2>
-                      {name} - {recipes.length} recipe(s){" "}
+                      {name} - {recipes.length} recipe(s) - {totalCal} kCal
                     </StyledH2>
-                    {totalCal} kCal, {totalProtein} protein, {totalCarbs} carbs,{" "}
-                    {totalFat} fat
+                    {totalProtein}g protein, {totalCarbs}g carbs, {totalFat}g
+                    fat
                   </StyledNavLink>
                   <button
                     onClick={(e) => handleDeletePlan(planIndex, id)}
@@ -263,7 +263,7 @@ const MealPlanItem = styled.div`
   padding: 10px;
   border: none;
   outline: none;
-  background: var(--color-button);
+  background: var(--color-midground);
   /* border-radius: 0 0 10px 10px; */
   width: 100%;
 

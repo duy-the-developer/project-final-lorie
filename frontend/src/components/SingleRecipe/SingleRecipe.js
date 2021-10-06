@@ -69,13 +69,13 @@ const SingleRecipe = () => {
 
     const caloriesNumOnly = calories.replace("k", "");
     const carbsPercentage = Math.round(
-      ((carbs.replace("g", "") * 4) / caloriesNumOnly) * 100 * 0.9
+      ((carbs.replace("g", "") * 4) / caloriesNumOnly) * 100 * 0.8
     );
     const fatPercentage = Math.round(
-      ((fat.replace("g", "") * 9) / caloriesNumOnly) * 100 * 0.9
+      ((fat.replace("g", "") * 9) / caloriesNumOnly) * 100 * 0.8
     );
     const proteinPercentage = Math.round(
-      ((protein.replace("g", "") * 4) / caloriesNumOnly) * 100 * 0.9
+      ((protein.replace("g", "") * 4) / caloriesNumOnly) * 100 * 0.8
     );
 
     console.log(extendedIngredients, `extendedIngredients`);
@@ -243,6 +243,7 @@ const NutritionWrapper = styled.div`
   display: flex;
   justify-content: space-between;
 `;
+
 const NutritionTitles = styled.div`
   display: flex;
   flex-direction: column;
@@ -251,7 +252,7 @@ const NutritionTitles = styled.div`
 `;
 
 const IngredientLine = styled.div`
-  width: 30%;
+  width: 35%;
   padding: 0 0px;
   margin-right: 10px;
 `;

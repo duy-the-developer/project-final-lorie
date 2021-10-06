@@ -347,7 +347,7 @@ const SearchButton = styled.button`
   margin-top: 15px;
   font-size: 24px;
   width: 100%;
-  background-color: var(--color-midground);
+  background-color: var(--color-button);
   color: var(--color-text);
   border: none;
   box-sizing: border-box;

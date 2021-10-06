@@ -373,7 +373,7 @@ const removeRecipeFromMealPlan = async (req, res) => {
   const {
     client,
     db,
-    body: { recipeId, planId, userId },
+    body: { recipeIndex, recipeId, planId, planIndex, userId },
   } = req;
 
   try {
@@ -385,29 +385,13 @@ const removeRecipeFromMealPlan = async (req, res) => {
 
     const mealPlans = user[0].mealPlans;
 
-    // FIND THE TARGET PLAN
-    let targetPlan = mealPlans.find((plan) => plan.id === planId);
+    mealPlans[planIndex].recipes.splice(recipeIndex, 1);
 
-    // FIND TARGET RECIPE
-    const targetRecipe = targetPlan.recipes.find(
-      (recipe) => recipe.id === recipeId
+    mealPlans[planIndex].totalNutrition = getTotalNutrition(
+      mealPlans[planIndex]
     );
 
-    // FIND TARGET RECIPE'S INDEX AND SPLICE IT
-    const targetRecipeIndex = targetPlan.recipes.indexOf(targetRecipe);
-
-    targetPlan.recipes.splice(targetRecipeIndex, 1);
-
-    // RECALCULATE NUTRITIONAL DATA
-    targetPlan = {
-      ...targetPlan,
-      totalNutrition: getTotalNutrition(targetPlan),
-    };
-
-    // FIND TARGET PLAN'S INDEX AND REPLACE IT WITH NEW PLAN
-    const targetPlanIndex = mealPlans.indexOf(targetPlan);
-
-    mealPlans.splice(targetPlanIndex, 1, targetPlan);
+    console.log(`mealPlans[planIndex]`, mealPlans[planIndex]);
 
     const updateObj = {
       $set: {
@@ -423,6 +407,7 @@ const removeRecipeFromMealPlan = async (req, res) => {
       message: `Recipe ${recipeId} removed from meal plan ${planId}`,
       data: user[0],
     });
+    client.close();
   } catch (error) {
     console.log(error);
     sendResponse({ ...errorObject, res: res });
@@ -523,7 +508,7 @@ const getRecipeInformation = async (req, res) => {
   let resData = null;
 
   try {
-    // GET RECIPE INFO FROM SPOONACULAR
+    // // GET RECIPE INFO FROM SPOONACULAR
     // await request(
     //   `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=${SPOONACULAR_APIKEY}`
     // )

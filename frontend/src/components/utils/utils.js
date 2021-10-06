@@ -33,8 +33,62 @@ const capitalizeFirstLetter = (string) => {
   return string.toUpperCase().split("")[0] + string.substring(1);
 };
 
+const getShoppingList = (recipes) => {
+  let resultObj = {};
+  const ingredientsArr = recipes.map((recipe) => {
+    return recipe.information.extendedIngredients;
+  });
+
+  ingredientsArr.forEach((ingredientList) => {
+    ingredientList.forEach((ingredient) => {
+      const {
+        id,
+        image,
+        measures: {
+          metric: { amount, unitShort },
+        },
+        originalName,
+      } = ingredient;
+
+      if (!resultObj[ingredient.id]) {
+        return (resultObj = {
+          ...resultObj,
+          [ingredient.id]: {
+            id: id,
+            image: image,
+            measures: {
+              metric: { amount: +amount, unitShort: unitShort },
+            },
+            originalName: originalName,
+          },
+        });
+      } else {
+        return (resultObj = {
+          ...resultObj,
+          [ingredient.id]: {
+            id: id,
+            image: image,
+            measures: {
+              metric: {
+                amount:
+                  resultObj[ingredient.id].measures.metric.amount + amount,
+                unitShort: unitShort,
+              },
+            },
+            unitShort: unitShort,
+            originalName: originalName,
+          },
+        });
+      }
+    });
+  });
+
+  return Object.values(resultObj);
+};
+
 module.exports = {
   getMinMax,
   getQueryString,
   capitalizeFirstLetter,
+  getShoppingList,
 };

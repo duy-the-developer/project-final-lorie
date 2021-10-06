@@ -1,6 +1,11 @@
 import React from "react";
 import { BiSliderAlt, BiLoader } from "react-icons/bi";
-import { RiHomeLine, RiSearch2Line, RiBookmark2Line } from "react-icons/ri";
+import {
+  RiHomeLine,
+  RiSearch2Line,
+  RiBookmark2Line,
+  RiEdit2Fill,
+} from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
 import styled, { keyframes } from "styled-components";
 import { IoIosArrowBack, IoMdClose } from "react-icons/io";
@@ -116,6 +121,17 @@ const Delete = styled(IoMdClose)`
   color: tomato;
 `;
 
+const StyledEditIcon = () => {
+  return <Edit />;
+};
+
+const Edit = styled(RiEdit2Fill)`
+  height: var(--icon-size);
+  width: var(--icon-size);
+  max-width: 30px;
+  max-height: 30px;
+`;
+
 export {
   StyledSliderIcon,
   StyledHomeIcon,
@@ -125,4 +141,5 @@ export {
   StyledLoaderIcon,
   StyledBackIcon,
   StyledDeleteIcon,
+  StyledEditIcon,
 };

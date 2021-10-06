@@ -25,12 +25,13 @@ const MealCard = ({ mealData }) => {
 const Wrapper = styled.div`
   width: inherit;
   aspect-ratio: 1/1.3;
-  max-width: 340px;
+  max-width: 337px;
   background-color: var(--color-midground);
   border-radius: 20px;
   justify-content: flex-start;
   flex-direction: column;
   overflow: hidden;
+  flex-shrink: 0;
 `;
 
 const StyledImg = styled.img`

@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { capitalizeFirstLetter } from "../utils/utils";
 
 const IngredientList = ({ ingredients }) => {
+  const [isClicked, setIsClicked] = useState(false);
+
   return (
     <Wrapper>
       {ingredients.map((ingredient) => {
@@ -14,19 +16,27 @@ const IngredientList = ({ ingredients }) => {
           },
         } = ingredient;
 
-        const roundedAmount = Math.round(amount);
+        const roundedAmount = Math.round(amount * 1);
 
         return (
-          <IngredientWrapper key={`${originalName}_${amount}${unitShort}`}>
-            <StyledImage
-              src={`https://spoonacular.com/cdn/ingredients_100x100/${image}`}
-            ></StyledImage>
-            <InfoWrapper>
-              <Name>{`${capitalizeFirstLetter(originalName)}`}</Name>
-              <Amount>{`${roundedAmount}
+          <div
+            value={true}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <IngredientWrapper key={`${originalName}_${amount}${unitShort}`}>
+              <StyledImage
+                src={`https://spoonacular.com/cdn/ingredients_100x100/${image}`}
+              ></StyledImage>
+              <InfoWrapper>
+                <Name>{`${capitalizeFirstLetter(originalName)}`}</Name>
+                <Amount>{`${roundedAmount}
               ${unitShort}`}</Amount>
-            </InfoWrapper>
-          </IngredientWrapper>
+              </InfoWrapper>
+            </IngredientWrapper>
+          </div>
         );
       })}
     </Wrapper>
@@ -39,6 +49,8 @@ const Wrapper = styled.div`
   justify-content: space-between;
   padding: 10px 15px;
   row-gap: 10px;
+  background: inherit;
+  border-radius: 20px;
 `;
 
 const IngredientWrapper = styled.div`
