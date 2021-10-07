@@ -10,6 +10,7 @@ import {
 import { CgProfile } from "react-icons/cg";
 import styled, { keyframes } from "styled-components";
 import { IoIosArrowBack, IoIosArrowForward, IoMdClose } from "react-icons/io";
+import { AiFillStar } from "react-icons/ai";
 
 // SLIDER ICON
 const StyledSliderIcon = () => {
@@ -158,6 +159,17 @@ const Mail = styled(RiMailOpenLine)`
   max-height: 40px;
 `;
 
+const StyledFavouriteIcon = () => {
+  return <StyledFavourite />;
+};
+
+const StyledFavourite = styled(AiFillStar)`
+  height: var(--icon-size);
+  width: var(--icon-size);
+  max-width: 30px;
+  max-height: 30px;
+`;
+
 export {
   StyledSliderIcon,
   StyledHomeIcon,
@@ -170,4 +182,5 @@ export {
   StyledEditIcon,
   StyledMailIcon,
   StyledForwardIcon,
+  StyledFavouriteIcon,
 };

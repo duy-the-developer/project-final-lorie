@@ -14,6 +14,8 @@ import { useHistory } from "react-router";
 
 import { capitalizeFirstLetter } from "../utils/utils";
 
+import Header from "../Header/Header";
+
 const Profile = () => {
   const { user, isAuthenticated, isLoading, logout } = useAuth0();
 
@@ -21,11 +23,8 @@ const Profile = () => {
 
   const {
     state: {
-      isLoaded,
       userContextData: {
-        _id,
         email,
-        family_name,
         settings: {
           targetDailyCalories,
           dietType,
@@ -45,20 +44,12 @@ const Profile = () => {
     return <div></div>;
   }
 
-  const { given_name, picture, nickname } = user;
+  const { nickname } = user;
 
   return (
     isAuthenticated && (
       <Wrapper>
-        <Header>
-          <H2>
-            Hello, <br />{" "}
-            <span style={{ fontStyle: "italic" }}>{given_name}</span>
-            <Underline />
-          </H2>
-
-          <Avatar src={picture} alt={given_name} />
-        </Header>
+        <Header />
 
         <Body>
           <Section>
@@ -197,29 +188,15 @@ const Wrapper = styled.div`
   padding-bottom: 70px;
 `;
 
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-`;
-
-const Body = styled(Header)`
+const Body = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   max-width: 340px;
   row-gap: 20px;
-`;
-
-const H2 = styled.h2`
-  text-align: left;
-`;
-
-const Avatar = styled.img`
-  max-width: 50px;
-  border-radius: 10px;
-  box-sizing: border-box;
-  object-fit: cover;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 `;
 
 const LogOutButton = styled.button`
@@ -236,12 +213,6 @@ const LogOutButton = styled.button`
   &:active {
     opacity: 0.5;
   }
-`;
-
-const Underline = styled.div`
-  margin-top: -10px;
-  border-top: 10px solid var(--color-underline2);
-  z-index: 0;
 `;
 
 const Section = styled.div`

@@ -23,6 +23,7 @@ const {
   getRecipeInformation,
   getPersonalMealPlan,
   removeRecipeFromMealPlan,
+  getSimilarRecipe,
 } = require("./handlers");
 
 express()
@@ -63,6 +64,7 @@ express()
   .get("/mealPlan", getMealPlan)
   .get("/complexSearch", getComplexSearch)
   .get("/recipe/:id", getRecipeInformation)
+  .post("/suggestion", getSimilarRecipe)
 
   //
   // add new endpoints here ☝️

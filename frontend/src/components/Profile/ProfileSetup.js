@@ -8,6 +8,8 @@ import { dietTypes, intoleranceTypes } from "../utils/cuisinesData";
 
 import { UserContext } from "../ContextProviders/UserContext";
 
+import Header from "../Header/Header";
+
 const ProfileSetup = () => {
   const { user } = useAuth0();
   const [needRefresh, setNeedRefresh] = useState(false);
@@ -45,7 +47,7 @@ const ProfileSetup = () => {
 
   const history = useHistory();
 
-  const { given_name, picture, sub } = user;
+  const { sub } = user;
 
   const handleUpdateUserInfo = () => {
     setNeedRefresh(true);
@@ -83,15 +85,8 @@ const ProfileSetup = () => {
 
   return (
     <Wrapper>
-      <Header>
-        <H2>
-          Hello, <br />{" "}
-          <span style={{ fontStyle: "italic" }}>{given_name}</span>
-          <Underline />
-        </H2>
+      <Header />
 
-        <Avatar src={picture} alt={given_name} />
-      </Header>
       <Body>
         {!needRefresh && (
           <Section>
@@ -153,36 +148,37 @@ const ProfileSetup = () => {
                   Intolerances
                 </span>
                 <StyledSelect
-              id="intolerances"
-              name="intolerances"
-              onChange={(e) => {
-                setIntolerances(e.target.value);
-              }}
-            >
-              <option value="">Intolerances - Pick one (optional)</option>
-              {intoleranceTypes.map((intolerance) => {
-                return (
-                  <>
-                    {intolerance.toLocaleLowerCase() === intolerancesDisplay ? (
-                      <option
-                        selected
-                        key={intolerance}
-                        value={intolerance.toLowerCase()}
-                      >
-                        {intolerance}
-                      </option>
-                    ) : (
-                      <option
-                        key={intolerance}
-                        value={intolerance.toLowerCase()}
-                      >
-                        {intolerance}
-                      </option>
-                    )}
-                  </>
-                );
-              })}
-            </StyledSelect>
+                  id="intolerances"
+                  name="intolerances"
+                  onChange={(e) => {
+                    setIntolerances(e.target.value);
+                  }}
+                >
+                  <option value="">Intolerances - Pick one (optional)</option>
+                  {intoleranceTypes.map((intolerance) => {
+                    return (
+                      <>
+                        {intolerance.toLocaleLowerCase() ===
+                        intolerancesDisplay ? (
+                          <option
+                            selected
+                            key={intolerance}
+                            value={intolerance.toLowerCase()}
+                          >
+                            {intolerance}
+                          </option>
+                        ) : (
+                          <option
+                            key={intolerance}
+                            value={intolerance.toLowerCase()}
+                          >
+                            {intolerance}
+                          </option>
+                        )}
+                      </>
+                    );
+                  })}
+                </StyledSelect>
               </MenuItem>
               <MenuItem>
                 <span style={{ fontSize: "12px", color: "grey" }}>
@@ -231,16 +227,16 @@ const ProfileSetup = () => {
             </SectionBody>
           </Section>
         )}
-        <UpdateButton
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            handleUpdateUserInfo();
-          }}
-        >
-          Update
-        </UpdateButton>
       </Body>
+      <UpdateButton
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleUpdateUserInfo();
+        }}
+      >
+        Update
+      </UpdateButton>
     </Wrapper>
   );
 };
@@ -253,38 +249,18 @@ const Wrapper = styled.div`
   justify-content: center;
   row-gap: 40px;
   color: var(--color-text);
-  padding-bottom: 70px;
+  padding-bottom: 40px;
 `;
 
-const Header = styled.div`
+const Body = styled.div`
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 340px;
+  row-gap: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-`;
-
-const H2 = styled.h2`
-  text-align: left;
-`;
-
-const Underline = styled.div`
-  margin-top: -10px;
-  border-top: 10px solid var(--color-underline2);
-  z-index: 0;
-`;
-
-const Avatar = styled.img`
-  max-width: 50px;
-  border-radius: 10px;
-  box-sizing: border-box;
-  object-fit: cover;
-`;
-
-const Body = styled(Header)`
-  justify-content: center;
-  flex-wrap: wrap;
-  max-width: 340px;
-  row-gap: 20px;
 `;
 
 const Section = styled.div`
@@ -367,6 +343,7 @@ const UpdateButton = styled.button`
   border: none;
   box-sizing: border-box;
   border-radius: 20px;
+  margin-top: -20px;
 
   &:active {
     opacity: 0.5;

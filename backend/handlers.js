@@ -613,6 +613,35 @@ const getRecipeInformation = async (req, res) => {
   }
 };
 
+const getSimilarRecipe = async (req, res) => {
+  let resData = null;
+  const { favouriteMeals } = req.body;
+
+  const randomFavourite =
+    favouriteMeals[Math.floor(Math.random() * favouriteMeals.length)];
+
+  const { id } = randomFavourite;
+
+  try {
+    await request(
+      `https://api.spoonacular.com/recipes/${id}/similar?apiKey=${SPOONACULAR_APIKEY}&number=5`
+    )
+      .then((res) => JSON.parse(res))
+      .then((data) => {
+        resData = data;
+      });
+
+    sendResponse({
+      res: res,
+      status: 200,
+      data: resData,
+      message: "Get similar recipe successful",
+    });
+  } catch (error) {
+    console.log(error);
+    sendResponse({ ...errorObject, res: res, data: error });
+  }
+};
 module.exports = {
   dbConnect,
   getMealPlan,
@@ -629,4 +658,5 @@ module.exports = {
   removeRecipeFromMealPlan,
   deleteMealPlan,
   updateUser,
+  getSimilarRecipe,
 };
