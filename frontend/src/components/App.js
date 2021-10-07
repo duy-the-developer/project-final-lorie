@@ -17,7 +17,8 @@ import Bookmark from "./Bookmark/Bookmark";
 import SearchMenu from "./Search/SearchMenu";
 import SingleRecipe from "./SingleRecipe/SingleRecipe";
 import ProfileSetup from "./Profile/ProfileSetup";
-import Thanks from "./Thanks";
+import ContactUs from "./Profile/ContactUs";
+import ScrollToTop from "./utils/ScrollToTop";
 
 // IMPORT CONTEXT
 import { UserContext } from "./ContextProviders/UserContext";
@@ -84,6 +85,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <GlobalStyles />
       <Wrapper>
         <Main>
@@ -120,7 +122,7 @@ const App = () => {
               <ProfileSetup />
             </Route>
             <Route exact path="/thank-you">
-              <Thanks />
+              <ContactUs />
             </Route>
           </Switch>
         </Main>

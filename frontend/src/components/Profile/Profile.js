@@ -163,7 +163,9 @@ const Profile = () => {
               <MenuItem>
                 <span>FAQ {`&`} Guides</span>
               </MenuItem>
-              <MenuItem>
+              <MenuItem onClick={(e) => {
+                    history.push("/thank-you");
+                  }}>
                 <span>Contact Us</span>
               </MenuItem>
             </SectionBody>

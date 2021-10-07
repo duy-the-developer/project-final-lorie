@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Thanks = () => {
+const ContactUs = () => {
   return (
     <Wrapper>
       <Paragraph>
@@ -58,7 +58,7 @@ const Wrapper = styled.div`
 const Paragraph = styled.p`
   width: 100%;
   text-align: left;
-  line-height: 120%
+  line-height: 120%;
 `;
 
-export default Thanks;
+export default ContactUs;
