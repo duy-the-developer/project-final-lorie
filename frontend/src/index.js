@@ -6,12 +6,13 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import { UserProvider } from "./components/ContextProviders/UserContext";
 
 require("dotenv").config();
-const domain = process.env.REACT_APP_AUTH0_DOMAIN;
+const AUTH0_DOMAIN = process.env.REACT_APP_AUTH0_DOMAIN;
+const AUTH0_CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID;
 
 ReactDOM.render(
   <Auth0Provider
-    domain="dev-d7y3zdea.us.auth0.com"
-    clientId="WQyHfO7XXefS7czVxU4sPBcVg0HDdxzn"
+    domain={`${AUTH0_DOMAIN}`}
+    clientId={`${AUTH0_CLIENT_ID}`}
     redirectUri={window.location.origin}
   >
     <UserProvider>

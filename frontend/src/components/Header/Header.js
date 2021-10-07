@@ -20,6 +20,8 @@ const Header = () => {
         <Avatar src={picture} alt={given_name} />
       </HeaderWrapper>
     );
+  } else {
+    return <></>;
   }
 };
 

@@ -37,7 +37,6 @@ const Profile = () => {
         },
       },
     },
-    action: { getUserInfo },
   } = useContext(UserContext);
 
   if (isLoading) {

@@ -52,17 +52,10 @@ const getTotalNutrition = (mealPlan) => {
       nutrition: { calories, carbs, fat, protein },
     } = recipe;
 
-    // console.log(calories, carbs, fat, protein);
-
     const caloriesAsNum = calories.replace("k", "") * 1;
     const carbsAsNum = carbs.replace("g", "") * 1;
     const fatAsNum = fat.replace("g", "") * 1;
     const proteinAsNum = protein.replace("g", "") * 1;
-
-    // console.log(`caloriesAsNum`, caloriesAsNum, `type`, typeof caloriesAsNum);
-    // console.log(`carbsAsNum`, carbsAsNum, `type`, typeof carbsAsNum);
-    // console.log(`fatAsNum`, fatAsNum, `type`, typeof fatAsNum);
-    // console.log(`proteinAsNum`, proteinAsNum, `type`, typeof proteinAsNum);
 
     totalCal += caloriesAsNum;
     totalCarbs += carbsAsNum;

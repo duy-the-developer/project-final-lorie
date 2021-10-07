@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
 const MealCard = ({ mealData }) => {
-  const { id, imageType, readyInMinutes, servings, sourceUrl, title } =
+  const { id, imageType, readyInMinutes, servings, title } =
     mealData;
   return (
     <Wrapper>

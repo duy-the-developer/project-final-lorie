@@ -36,7 +36,6 @@ const CustomSearch = () => {
 
   // INITIATE STATES
   const { type } = useParams();
-  console.log(capitalizeFirstLetter(type));
   const [calories, setCalories] = useState("");
   const [minCarbs, setMinCarbs] = useState("");
   const [maxCarbs, setMaxCarbs] = useState("");
@@ -100,7 +99,6 @@ const CustomSearch = () => {
 
     // GET QUERY STRING USING HELPER FUNCTION
     const queryString = getQueryString(queryStringObj);
-    console.log(queryString);
 
     // FETCH DATA, UPDATE STATE AND SAVE IN LOCAL STORAGE
     fetch(`/complexSearch/?${queryString}`, reqObject)
@@ -149,6 +147,7 @@ const CustomSearch = () => {
           <>
             <MacroInputWrapper>
               <StyledMiniInput
+                key="minCarbs"
                 value={minCarbs}
                 type="number"
                 placeholder="Min carbs"
@@ -157,6 +156,7 @@ const CustomSearch = () => {
                 }}
               />
               <StyledMiniInput
+                key="minProtein"
                 value={minProtein}
                 type="number"
                 placeholder="Min protein"
@@ -165,6 +165,7 @@ const CustomSearch = () => {
                 }}
               />
               <StyledMiniInput
+                key="minFat"
                 value={minFat}
                 type="number"
                 placeholder="Min fat"
@@ -175,6 +176,7 @@ const CustomSearch = () => {
             </MacroInputWrapper>
             <MacroInputWrapper>
               <StyledMiniInput
+                key="maxCarbs"
                 value={maxCarbs}
                 type="number"
                 placeholder="Max carbs"
@@ -183,6 +185,7 @@ const CustomSearch = () => {
                 }}
               />
               <StyledMiniInput
+                key="maxProtein"
                 value={maxProtein}
                 type="number"
                 placeholder="Max protein"
@@ -191,6 +194,7 @@ const CustomSearch = () => {
                 }}
               />
               <StyledMiniInput
+                key="maxFat"
                 value={maxFat}
                 type="number"
                 placeholder="Max fat"
@@ -200,6 +204,7 @@ const CustomSearch = () => {
               />
             </MacroInputWrapper>
             <StyledSelect
+              key="cuisine"
               id="cuisine"
               name="cuisine"
               onChange={(e) => {
@@ -216,6 +221,7 @@ const CustomSearch = () => {
               })}
             </StyledSelect>
             <StyledSelect
+              key="diet"
               id="diet"
               name="diet"
               onChange={(e) => {
@@ -240,6 +246,7 @@ const CustomSearch = () => {
               })}
             </StyledSelect>
             <StyledSelect
+              key="intolerances"
               id="intolerances"
               name="intolerances"
               onChange={(e) => {
@@ -271,6 +278,7 @@ const CustomSearch = () => {
               })}
             </StyledSelect>
             <StyledSelect
+              key="sort"
               id="sort"
               name="sort"
               onChange={(e) => {
@@ -289,6 +297,7 @@ const CustomSearch = () => {
               })}
             </StyledSelect>
             <StyledInput
+              key="exclude"
               value={exclude}
               type="string"
               placeholder="Excluding (e.g. milk) (optional)"
@@ -297,6 +306,7 @@ const CustomSearch = () => {
               }}
             />
             <StyledInput
+              key="include"
               value={include}
               type="string"
               placeholder="Including (e.g. egg) (optional)"

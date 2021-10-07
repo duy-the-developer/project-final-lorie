@@ -50,7 +50,6 @@ const SingleMealPlan = () => {
   } = currentPlan;
 
   const shoppingList = getShoppingList(recipes);
-  console.log(shoppingList);
 
   const targetDailyCarbs = Math.round(
     ((carbsPercentage / 100) * targetDailyCalories) / 4

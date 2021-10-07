@@ -60,10 +60,8 @@ const verifyUser = async (req, res, next) => {
 
     if (user[0]) {
       req.user = user[0];
-      console.log(`User found`, user[0]);
       next();
     } else {
-      console.log(`User not found`);
       sendResponse({ res: res, status: 404, message: "User not found" });
 
       client.close();
@@ -103,17 +101,7 @@ const addNewUser = async (req, res) => {
   const {
     client,
     db,
-    body: {
-      sub,
-      given_name,
-      email,
-      targetDailyCalories,
-      proteinPercentage,
-      fatPercentage,
-      carbsPercentage,
-      dietType,
-      intolerances,
-    },
+    body: { sub, given_name, email },
   } = req;
 
   // INITIATE NEW USER OBJECT
@@ -125,13 +113,13 @@ const addNewUser = async (req, res) => {
     mealPlans: [],
     favouriteMeals: [],
     settings: {
-      targetDailyCalories: targetDailyCalories,
-      dietType: dietType,
-      intolerances: intolerances,
+      targetDailyCalories: "",
+      dietType: "",
+      intolerances: "",
       marcroNutrients: {
-        proteinPercentage: proteinPercentage,
-        fatPercentage: fatPercentage,
-        carbsPercentage: carbsPercentage,
+        proteinPercentage: "",
+        fatPercentage: "",
+        carbsPercentage: "",
       },
     },
   };
@@ -292,8 +280,6 @@ const getPersonalMealPlan = async (req, res) => {
     params: { userId },
   } = req;
 
-  console.log(userId);
-
   const query = { _id: userId };
 
   try {
@@ -445,8 +431,6 @@ const removeRecipeFromMealPlan = async (req, res) => {
       mealPlans[planIndex]
     );
 
-    console.log(`mealPlans[planIndex]`, mealPlans[planIndex]);
-
     const updateObj = {
       $set: {
         mealPlans: mealPlans,
@@ -570,16 +554,6 @@ const getRecipeInformation = async (req, res) => {
       .then((data) => {
         resData = { ...resData, information: data };
       });
-
-    // (NO LONGER NEEDED) GET INGREDIENTS FROM SPOONACULAR
-    // await request(
-    //   `https://api.spoonacular.com/recipes/${id}/ingredientWidget.json/?apiKey=${SPOONACULAR_APIKEY}`
-    // )
-    //   .then((res) => JSON.parse(res))
-    //   .then((data) => {
-    //     console.log(data);
-    //     resData = { ...resData, ingredients: data.ingredients };
-    //   });
 
     // GET ANALYZED INSTRUCTIONS FROM SPOONACULAR
     await request(

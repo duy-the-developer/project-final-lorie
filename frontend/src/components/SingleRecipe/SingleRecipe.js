@@ -43,7 +43,6 @@ const SingleRecipe = () => {
     fetch(`/recipe/${id}`, reqObject)
       .then((res) => res.json())
       .then((data) => {
-        console.log(`DATA SINGLE RECIPE EXPECT`, data);
         setRecipeData({ ...data, isLoaded: true });
       })
       .catch((error) => {
@@ -55,14 +54,12 @@ const SingleRecipe = () => {
   if (recipeData.isLoaded) {
     const {
       information: {
-        image,
         imageType,
         readyInMinutes,
         servings,
         title,
         extendedIngredients,
       },
-      ingredients,
       instructions,
       nutrition: { calories, carbs, fat, protein },
     } = recipeData.data;
@@ -77,8 +74,6 @@ const SingleRecipe = () => {
     const proteinPercentage = Math.round(
       ((protein.replace("g", "") * 4) / caloriesNumOnly) * 100 * 0.8
     );
-
-    console.log(extendedIngredients, `extendedIngredients`);
 
     return (
       <Wrapper>

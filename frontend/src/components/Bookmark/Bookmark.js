@@ -45,8 +45,6 @@ const Bookmark = () => {
   };
 
   const handleDeletePlan = (index, id) => {
-    console.log(id);
-
     const bodyObject = {
       userId: _id,
       planIndex: index,
@@ -70,7 +68,6 @@ const Bookmark = () => {
       .catch((error) => console.log(error));
   };
 
-  console.log(mealPlans);
   return (
     <Wrapper>
       <StyledSection>
@@ -158,7 +155,7 @@ const Bookmark = () => {
                 },
               } = meal;
               return (
-                <MealCard
+                <MealCard key={id}
                   mealData={{
                     id: id,
                     imageType: imageType,

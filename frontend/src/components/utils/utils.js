@@ -4,7 +4,7 @@ const getMinMax = (targetValueObj) => {
 
   // iterate through each nutrition
   keysArr.map((key) => {
-    result = {
+    return result = {
       ...result,
       [key]: {
         [`min${key}`]: Math.round(targetValueObj[key] * 0.9),

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useHistory } from "react-router";
 
 import Header from "../Header/Header";
 import MealCard from "../MealList/MealCard";
@@ -9,7 +9,7 @@ import { StyledFavouriteIcon } from "../utils/StyledIcons";
 
 import { UserContext } from "../ContextProviders/UserContext";
 
-const Home = () => {
+const Home = ({ isNewUser, setIsNewUser }) => {
   const [suggestedRecipes, setSuggestedRecipes] = useState(false);
   const {
     state: {
@@ -17,6 +17,12 @@ const Home = () => {
       userContextData: { favouriteMeals },
     },
   } = useContext(UserContext);
+
+  const history = useHistory();
+  if (isNewUser) {
+    history.push("/profile/setup");
+    setIsNewUser(false);
+  }
 
   useEffect(() => {
     const reqObject = {
@@ -31,7 +37,6 @@ const Home = () => {
     fetch(`/suggestion`, reqObject)
       .then((res) => res.json())
       .then((parsedData) => {
-        console.log(parsedData);
         setSuggestedRecipes(parsedData.data);
       })
       .catch((error) => console.log(error));
@@ -138,31 +143,6 @@ const SectionTitle = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 4px;
-`;
-
-const SectionBody = styled.div`
-  padding: 15px 15px;
-  background: var(--color-midground);
-  border-radius: 10px;
-`;
-
-const MenuItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  row-gap: 3px;
-  border-bottom: 1px solid grey;
-  padding: 10px 0;
-  min-height: 40px;
-
-  &:nth-child(1) {
-    padding-top: 0;
-  }
-
-  &:last-child {
-    padding-bottom: 0;
-    border: none;
-  }
 `;
 
 export default Home;

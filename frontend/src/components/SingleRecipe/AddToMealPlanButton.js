@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { BsBookmarkFill } from "react-icons/bs";
 import styled from "styled-components";
 
@@ -73,7 +73,6 @@ const AddToMealPlanButton = ({ recipeId, recipeData }) => {
       .then((res) => res.json())
       .then((data) => {
         getUserInfo(data);
-        console.log(data);
       })
       .catch((error) => console.log(error));
 

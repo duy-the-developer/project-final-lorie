@@ -16,11 +16,7 @@ const ProfileSetup = () => {
 
   const {
     state: {
-      isLoaded,
       userContextData: {
-        _id,
-        email,
-        family_name,
         settings: {
           targetDailyCalories,
           dietType,
@@ -47,8 +43,6 @@ const ProfileSetup = () => {
 
   const history = useHistory();
 
-  const { sub } = user;
-
   const handleUpdateUserInfo = () => {
     setNeedRefresh(true);
 
@@ -71,10 +65,9 @@ const ProfileSetup = () => {
       },
     };
 
-    fetch(`/user/${sub}`, reqObject)
+    fetch(`/user/${user.sub}`, reqObject)
       .then((res) => res.json())
       .then((parsedData) => {
-        console.log(parsedData);
         getUserInfo(parsedData);
         history.push("/profile");
       })

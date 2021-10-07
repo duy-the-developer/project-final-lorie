@@ -1,5 +1,5 @@
 // IMPORT DEPENDENCIES
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -25,10 +25,10 @@ import SingleMealPlan from "./Bookmark/SingleMealPlan";
 const App = () => {
   // GET DATA FROM AUTH0
   const { user, isAuthenticated } = useAuth0();
+  const [isNewUser, setIsNewUser] = useState(false);
 
   // DESTRUCTURE USER CONTEXT VARIABLES
   const {
-    state: { isLoaded, userContextData },
     action: { getUserInfo },
   } = useContext(UserContext);
 
@@ -36,8 +36,7 @@ const App = () => {
   useEffect(() => {
     if (isAuthenticated) {
       // GET UNIQUE SUB STRING FROM AUTH0 USER OBJECT
-      const { sub } = user;
-      console.log(sub);
+      const { sub, given_name, email } = user;
 
       // INITATE REQUEST OBJECT
       const reqObject = {
@@ -48,12 +47,35 @@ const App = () => {
         },
       };
 
+      const bodyObject = {
+        sub: sub,
+        given_name: given_name,
+        email: email,
+      };
+
+      const postObject = {
+        method: "POST",
+        body: JSON.stringify(bodyObject),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      };
+
       // VERIFY AND FETCH USER'S PROFILE FROM BACKEND
       fetch(`/user/${sub}`, reqObject)
         .then((res) => res.json())
         .then((parsedData) => {
-          console.log(parsedData);
-          getUserInfo(parsedData);
+          if (parsedData.status === 200) {
+            getUserInfo(parsedData);
+          } else {
+            fetch(`/user/add`, postObject)
+              .then((res) => res.json())
+              .then((parsedData) => {
+                getUserInfo(parsedData);
+                setIsNewUser(true);
+              });
+          }
         })
         .catch((error) => console.log(error));
     }
@@ -67,7 +89,7 @@ const App = () => {
           <LoginPush />
           <Switch>
             <Route exact path="/">
-              <Home />
+              <Home isNewUser={isNewUser} setIsNewUser={setIsNewUser} />
             </Route>
             <Route exact path="/search">
               <SearchMenu />

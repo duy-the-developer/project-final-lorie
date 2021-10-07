@@ -74,16 +74,6 @@ const QuickSearch = () => {
         {isAdvancedSearch && (
           <>
             <StyledSelect
-              id="timeFrame"
-              name="timeFrame"
-              onChange={(e) => {
-                setTimeFrame(e.target.value);
-              }}
-            >
-              <option value="day">Day</option>
-              <option value="week">Week</option>
-            </StyledSelect>
-            <StyledSelect
               id="diet"
               name="diet"
               onChange={(e) => {
