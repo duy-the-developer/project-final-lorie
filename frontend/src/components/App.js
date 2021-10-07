@@ -17,6 +17,7 @@ import Bookmark from "./Bookmark/Bookmark";
 import SearchMenu from "./Search/SearchMenu";
 import SingleRecipe from "./SingleRecipe/SingleRecipe";
 import ProfileSetup from "./Profile/ProfileSetup";
+import Thanks from "./Thanks";
 
 // IMPORT CONTEXT
 import { UserContext } from "./ContextProviders/UserContext";
@@ -117,6 +118,9 @@ const App = () => {
             </Route>
             <Route exact path="/profile/setup">
               <ProfileSetup />
+            </Route>
+            <Route exact path="/thank-you">
+              <Thanks />
             </Route>
           </Switch>
         </Main>
