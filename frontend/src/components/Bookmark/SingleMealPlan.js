@@ -23,7 +23,18 @@ const SingleMealPlan = () => {
   const {
     state: {
       isLoaded,
-      userContextData: { _id, mealPlans },
+      userContextData: {
+        _id,
+        mealPlans,
+        settings: {
+          targetDailyCalories,
+          marcroNutrients: {
+            proteinPercentage,
+            fatPercentage,
+            carbsPercentage,
+          },
+        },
+      },
     },
     action: { getUserInfo },
   } = useContext(UserContext);
@@ -41,11 +52,19 @@ const SingleMealPlan = () => {
   const shoppingList = getShoppingList(recipes);
   console.log(shoppingList);
 
-  const carbsPercentage = Math.round(((totalCarbs * 4) / totalCal) * 100 * 0.8);
-  const fatPercentage = Math.round(((totalFat * 9) / totalCal) * 100 * 0.8);
-  const proteinPercentage = Math.round(
-    ((totalProtein * 4) / totalCal) * 100 * 0.8
+  const targetDailyCarbs = Math.round(
+    ((carbsPercentage / 100) * targetDailyCalories) / 4
   );
+  const targetDailyProtein = Math.round(
+    ((proteinPercentage / 100) * targetDailyCalories) / 4
+  );
+  const targetDailyFat = Math.round(
+    ((fatPercentage / 100) * targetDailyCalories) / 9
+  );
+
+  const proteinBar = Math.round((totalProtein / targetDailyProtein) * 50);
+  const carbsBar = Math.round((totalCarbs / targetDailyCarbs) * 50);
+  const fatBar = Math.round((totalFat / targetDailyFat) * 50);
 
   const handleDeleteRecipe = (recipeIndex, recipeId, planId, userId) => {
     const bodyObject = {
@@ -110,36 +129,44 @@ const SingleMealPlan = () => {
                     borderRadius: "20px",
                     marginBottom: "10px",
                     width: "auto",
+                    fontSize: "15px",
                   }}
                 >
-                  {totalCal} kCalories - {currentPlan.recipes.length} recipes
+                  {totalCal}/{targetDailyCalories} kCalories -{" "}
+                  {currentPlan.recipes.length} recipes
                 </IngredientLine>
               </Row>
               <Row>
-                <IngredientLine>Protein: {totalProtein}g</IngredientLine>
+                <IngredientLine>
+                  Protein: {totalProtein}/{targetDailyProtein}g
+                </IngredientLine>
                 <Bar
                   id="protein"
                   style={{
-                    width: `${proteinPercentage}%`,
+                    width: `${proteinBar}%`,
                   }}
                 ></Bar>
               </Row>
               <Row>
-                <IngredientLine>Carbs: {totalCarbs}g</IngredientLine>
+                <IngredientLine>
+                  Carbs: {totalCarbs}/{targetDailyCarbs}g
+                </IngredientLine>
                 <Bar
                   id="carbs"
                   style={{
-                    width: `${carbsPercentage}%`,
+                    width: `${carbsBar}%`,
                   }}
                 ></Bar>
               </Row>
 
               <Row>
-                <IngredientLine>Fat: {totalFat}g</IngredientLine>
+                <IngredientLine>
+                  Fat: {totalFat}/{targetDailyFat}g
+                </IngredientLine>
                 <Bar
                   id="fat"
                   style={{
-                    width: `${fatPercentage}%`,
+                    width: `${fatBar}%`,
                   }}
                 ></Bar>
               </Row>
@@ -264,9 +291,10 @@ const Row = styled.div`
 `;
 
 const IngredientLine = styled.div`
-  width: 35%;
+  width: 40%;
   padding: 0 0px;
   margin-right: 10px;
+  font-size: 14px;
 `;
 
 const Bar = styled.div`

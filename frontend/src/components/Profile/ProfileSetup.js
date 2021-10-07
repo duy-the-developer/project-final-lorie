@@ -35,8 +35,8 @@ const ProfileSetup = () => {
   } = useContext(UserContext);
 
   const [caloriesDisplay, setCalories] = useState(targetDailyCalories);
-  const [diet, setDiet] = useState("");
-  const [intolerancesDisplay, setIntolerances] = useState("");
+  const [dietDisplay, setDiet] = useState(dietType);
+  const [intolerancesDisplay, setIntolerances] = useState(intolerances);
   const [proteinPercentageDisplay, setProteinPercentage] =
     useState(proteinPercentage);
   const [carbsPercentageDisplay, setCarbsPercentage] =
@@ -55,7 +55,7 @@ const ProfileSetup = () => {
       proteinPercentage: proteinPercentageDisplay,
       carbsPercentage: carbsPercentageDisplay,
       fatPercentage: fatPercentageDisplay,
-      dietType: diet,
+      dietType: dietDisplay,
       intolerances: intolerancesDisplay,
     };
 
@@ -129,9 +129,21 @@ const ProfileSetup = () => {
                   <option value="">Diet type - Pick one (optional)</option>
                   {dietTypes.map((diet) => {
                     return (
-                      <option key={diet} value={diet.toLowerCase()}>
-                        {diet}
-                      </option>
+                      <>
+                        {diet.toLocaleLowerCase() === dietDisplay ? (
+                          <option
+                            selected
+                            key={diet}
+                            value={diet.toLowerCase()}
+                          >
+                            {diet}
+                          </option>
+                        ) : (
+                          <option key={diet} value={diet.toLowerCase()}>
+                            {diet}
+                          </option>
+                        )}
+                      </>
                     );
                   })}
                 </StyledSelect>
@@ -141,24 +153,36 @@ const ProfileSetup = () => {
                   Intolerances
                 </span>
                 <StyledSelect
-                  id="intolerances"
-                  name="intolerances"
-                  onChange={(e) => {
-                    setIntolerances(e.target.value);
-                  }}
-                >
-                  <option value="">Intolerances - Pick one (optional)</option>
-                  {intoleranceTypes.map((intolerance) => {
-                    return (
+              id="intolerances"
+              name="intolerances"
+              onChange={(e) => {
+                setIntolerances(e.target.value);
+              }}
+            >
+              <option value="">Intolerances - Pick one (optional)</option>
+              {intoleranceTypes.map((intolerance) => {
+                return (
+                  <>
+                    {intolerance.toLocaleLowerCase() === intolerancesDisplay ? (
+                      <option
+                        selected
+                        key={intolerance}
+                        value={intolerance.toLowerCase()}
+                      >
+                        {intolerance}
+                      </option>
+                    ) : (
                       <option
                         key={intolerance}
                         value={intolerance.toLowerCase()}
                       >
                         {intolerance}
                       </option>
-                    );
-                  })}
-                </StyledSelect>
+                    )}
+                  </>
+                );
+              })}
+            </StyledSelect>
               </MenuItem>
               <MenuItem>
                 <span style={{ fontSize: "12px", color: "grey" }}>

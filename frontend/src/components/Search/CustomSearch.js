@@ -1,5 +1,5 @@
 // IMPORT DEPENDENCIES
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 
 // IMPORT UTILITY FUNCTIONS
@@ -22,7 +22,18 @@ import {
 } from "../utils/cuisinesData";
 import { useParams } from "react-router";
 
+// IMPORT CONTEXT
+import { UserContext } from "../ContextProviders/UserContext";
+
 const CustomSearch = () => {
+  const {
+    state: {
+      userContextData: {
+        settings: { dietType, intolerances },
+      },
+    },
+  } = useContext(UserContext);
+
   // INITIATE STATES
   const { type } = useParams();
   console.log(capitalizeFirstLetter(type));
@@ -35,8 +46,8 @@ const CustomSearch = () => {
   const [maxFat, setMaxFat] = useState("");
   const [cuisine, setCuisine] = useState("");
   const [isAdvancedSearch, setIsAdvancedSearch] = useState(false);
-  const [diet, setDiet] = useState("");
-  const [intolerances, setIntolerances] = useState("");
+  const [dietDisplay, setDiet] = useState(dietType);
+  const [intolerancesDisplay, setIntolerances] = useState(intolerances);
   const [sort, setSort] = useState(`random`);
   const [exclude, setExclude] = useState("");
   const [include, setInclude] = useState("");
@@ -69,8 +80,8 @@ const CustomSearch = () => {
     // CONSTRUCT QUERY STRING OBJECT TO BE PROCESSED
     const queryStringObj = {
       cuisine: cuisine,
-      diet: diet,
-      intolerances: intolerances,
+      diet: dietDisplay,
+      intolerances: intolerancesDisplay,
       excludeIngredients: exclude,
       includeIngredients: include,
       type: type,
@@ -214,9 +225,17 @@ const CustomSearch = () => {
               <option value="">Diet type - Pick one (optional)</option>
               {dietTypes.map((diet) => {
                 return (
-                  <option key={diet} value={diet.toLowerCase()}>
-                    {diet}
-                  </option>
+                  <>
+                    {diet.toLocaleLowerCase() === dietDisplay ? (
+                      <option selected key={diet} value={diet.toLowerCase()}>
+                        {diet}
+                      </option>
+                    ) : (
+                      <option key={diet} value={diet.toLowerCase()}>
+                        {diet}
+                      </option>
+                    )}
+                  </>
                 );
               })}
             </StyledSelect>
@@ -230,9 +249,24 @@ const CustomSearch = () => {
               <option value="">Intolerances - Pick one (optional)</option>
               {intoleranceTypes.map((intolerance) => {
                 return (
-                  <option key={intolerance} value={intolerance.toLowerCase()}>
-                    {intolerance}
-                  </option>
+                  <>
+                    {intolerance.toLocaleLowerCase() === intolerancesDisplay ? (
+                      <option
+                        selected
+                        key={intolerance}
+                        value={intolerance.toLowerCase()}
+                      >
+                        {intolerance}
+                      </option>
+                    ) : (
+                      <option
+                        key={intolerance}
+                        value={intolerance.toLowerCase()}
+                      >
+                        {intolerance}
+                      </option>
+                    )}
+                  </>
                 );
               })}
             </StyledSelect>
@@ -240,7 +274,7 @@ const CustomSearch = () => {
               id="sort"
               name="sort"
               onChange={(e) => {
-                setIntolerances(e.target.value);
+                setSort(e.target.value);
               }}
             >
               <option value="random">
