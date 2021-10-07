@@ -221,59 +221,40 @@ const CustomSearch = () => {
               })}
             </StyledSelect>
             <StyledSelect
-              key="diet"
+              defaultValue={dietType}
               id="diet"
               name="diet"
               onChange={(e) => {
                 setDiet(e.target.value);
               }}
             >
-              <option value="">Diet type - Pick one (optional)</option>
+              <option value="" key="default">
+                Diet type - Pick one (optional)
+              </option>
               {dietTypes.map((diet) => {
                 return (
-                  <>
-                    {diet.toLocaleLowerCase() === dietDisplay ? (
-                      <option selected key={diet} value={diet.toLowerCase()}>
-                        {diet}
-                      </option>
-                    ) : (
-                      <option key={diet} value={diet.toLowerCase()}>
-                        {diet}
-                      </option>
-                    )}
-                  </>
+                  <option key={diet} value={diet.toLowerCase()}>
+                    {diet}
+                  </option>
                 );
               })}
             </StyledSelect>
             <StyledSelect
-              key="intolerances"
+              defaultValue={intolerancesDisplay}
               id="intolerances"
               name="intolerances"
               onChange={(e) => {
                 setIntolerances(e.target.value);
               }}
             >
-              <option value="">Intolerances - Pick one (optional)</option>
+              <option value="" key="default">
+                Intolerances - Pick one (optional)
+              </option>
               {intoleranceTypes.map((intolerance) => {
                 return (
-                  <>
-                    {intolerance.toLocaleLowerCase() === intolerancesDisplay ? (
-                      <option
-                        selected
-                        key={intolerance}
-                        value={intolerance.toLowerCase()}
-                      >
-                        {intolerance}
-                      </option>
-                    ) : (
-                      <option
-                        key={intolerance}
-                        value={intolerance.toLowerCase()}
-                      >
-                        {intolerance}
-                      </option>
-                    )}
-                  </>
+                  <option key={intolerance} value={intolerance.toLowerCase()}>
+                    {intolerance}
+                  </option>
                 );
               })}
             </StyledSelect>

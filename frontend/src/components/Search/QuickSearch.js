@@ -1,5 +1,5 @@
 // IMPORT DEPENDENCIES
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 
 // IMPORT DATA
@@ -9,7 +9,17 @@ import { dietTypes } from "../utils/cuisinesData";
 import { StyledSliderIcon } from "../utils/StyledIcons";
 import MealList from "../MealList/MealList";
 
+import { UserContext } from "../ContextProviders/UserContext";
+
 const QuickSearch = () => {
+  const {
+    state: {
+      userContextData: {
+        settings: { dietType },
+      },
+    },
+  } = useContext(UserContext);
+
   const [calories, setCalories] = useState(2000);
   const [isAdvancedSearch, setIsAdvancedSearch] = useState(false);
   const [timeFrame, setTimeFrame] = useState(`day`);
@@ -74,16 +84,19 @@ const QuickSearch = () => {
         {isAdvancedSearch && (
           <>
             <StyledSelect
+              defaultValue={dietType}
               id="diet"
               name="diet"
               onChange={(e) => {
                 setDiet(e.target.value);
               }}
             >
-              <option value="">Diet type - Pick one (optional)</option>
+              <option value="" key="default">
+                Diet type - Pick one (optional)
+              </option>
               {dietTypes.map((diet) => {
                 return (
-                  <option key={diet} value={diet}>
+                  <option key={diet} value={diet.toLowerCase()}>
                     {diet}
                   </option>
                 );

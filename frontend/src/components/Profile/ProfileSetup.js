@@ -103,77 +103,58 @@ const ProfileSetup = () => {
               </SectionTitle>
             </SectionHeading>
             <SectionBody>
-              <MenuItem>
+              <MenuItem key="diet">
                 <span style={{ fontSize: "12px", color: "grey" }}>
                   Diet preference
                 </span>
                 <StyledSelect
+                  defaultValue={dietType}
                   id="diet"
                   name="diet"
                   onChange={(e) => {
                     setDiet(e.target.value);
                   }}
                 >
-                  <option value="">Diet type - Pick one (optional)</option>
+                  <option value="" key="default">
+                    Diet type - Pick one (optional)
+                  </option>
                   {dietTypes.map((diet) => {
                     return (
-                      <>
-                        {diet.toLocaleLowerCase() === dietDisplay ? (
-                          <option
-                            selected
-                            key={diet}
-                            value={diet.toLowerCase()}
-                          >
-                            {diet}
-                          </option>
-                        ) : (
-                          <option key={diet} value={diet.toLowerCase()}>
-                            {diet}
-                          </option>
-                        )}
-                      </>
+                      <option key={diet} value={diet.toLowerCase()}>
+                        {diet}
+                      </option>
                     );
                   })}
                 </StyledSelect>
               </MenuItem>
-              <MenuItem>
+              <MenuItem key="intolerances">
                 <span style={{ fontSize: "12px", color: "grey" }}>
                   Intolerances
                 </span>
                 <StyledSelect
+                  defaultValue={intolerancesDisplay}
                   id="intolerances"
                   name="intolerances"
                   onChange={(e) => {
                     setIntolerances(e.target.value);
                   }}
                 >
-                  <option value="">Intolerances - Pick one (optional)</option>
+                  <option value="" key="default">
+                    Intolerances - Pick one (optional)
+                  </option>
                   {intoleranceTypes.map((intolerance) => {
                     return (
-                      <>
-                        {intolerance.toLocaleLowerCase() ===
-                        intolerancesDisplay ? (
-                          <option
-                            selected
-                            key={intolerance}
-                            value={intolerance.toLowerCase()}
-                          >
-                            {intolerance}
-                          </option>
-                        ) : (
-                          <option
-                            key={intolerance}
-                            value={intolerance.toLowerCase()}
-                          >
-                            {intolerance}
-                          </option>
-                        )}
-                      </>
+                      <option
+                        key={intolerance}
+                        value={intolerance.toLowerCase()}
+                      >
+                        {intolerance}
+                      </option>
                     );
                   })}
                 </StyledSelect>
               </MenuItem>
-              <MenuItem>
+              <MenuItem key="calories">
                 <span style={{ fontSize: "12px", color: "grey" }}>
                   Target daily calories
                 </span>
@@ -184,7 +165,7 @@ const ProfileSetup = () => {
                   onChange={(e) => setCalories(e.target.value)}
                 ></StyledInput>
               </MenuItem>
-              <MenuItem>
+              <MenuItem key="protein">
                 <span style={{ fontSize: "12px", color: "grey" }}>
                   Target daily protein
                 </span>
@@ -195,7 +176,7 @@ const ProfileSetup = () => {
                   onChange={(e) => setProteinPercentage(e.target.value)}
                 ></StyledInput>
               </MenuItem>
-              <MenuItem>
+              <MenuItem key="carbs">
                 <span style={{ fontSize: "12px", color: "grey" }}>
                   Target daily carbs
                 </span>
@@ -206,7 +187,7 @@ const ProfileSetup = () => {
                   onChange={(e) => setCarbsPercentage(e.target.value)}
                 ></StyledInput>
               </MenuItem>
-              <MenuItem>
+              <MenuItem key="fat">
                 <span style={{ fontSize: "12px", color: "grey" }}>
                   Target daily fat
                 </span>
