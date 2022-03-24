@@ -594,28 +594,37 @@ const getSimilarRecipe = async (req, res) => {
   const randomFavourite =
     favouriteMeals[Math.floor(Math.random() * favouriteMeals.length)];
 
-  const { id } = randomFavourite;
+  if (randomFavourite) {
+    try {
+      const { id } = randomFavourite;
+      await request(
+        `https://api.spoonacular.com/recipes/${id}/similar?apiKey=${SPOONACULAR_APIKEY}&number=5`
+      )
+        .then((res) => JSON.parse(res))
+        .then((data) => {
+          resData = data;
+        });
 
-  try {
-    await request(
-      `https://api.spoonacular.com/recipes/${id}/similar?apiKey=${SPOONACULAR_APIKEY}&number=5`
-    )
-      .then((res) => JSON.parse(res))
-      .then((data) => {
-        resData = data;
+      sendResponse({
+        res: res,
+        status: 200,
+        data: resData,
+        message: "Get similar recipe successful",
       });
-
+    } catch (error) {
+      console.log(error);
+      sendResponse({ ...errorObject, res: res, data: error });
+    }
+  } else {
     sendResponse({
       res: res,
-      status: 200,
+      status: 404,
       data: resData,
-      message: "Get similar recipe successful",
+      message: "No favourite meal found.",
     });
-  } catch (error) {
-    console.log(error);
-    sendResponse({ ...errorObject, res: res, data: error });
   }
 };
+
 module.exports = {
   dbConnect,
   getMealPlan,

@@ -17,7 +17,7 @@ const Header = () => {
           <Underline />
         </H2>
 
-        <Avatar src={picture} alt={given_name} />
+        {/* <Avatar src={picture} alt={given_name} /> */}
       </HeaderWrapper>
     );
   } else {
